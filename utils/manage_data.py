@@ -451,7 +451,7 @@ def create_mask(image_name,xy_pairs):
     if not os.path.exists(mask_dir):
         os.makedirs(mask_dir)
 
-    # points = np.array(xy_pairs)
+    points = np.array(xy_pairs)
     # sorted_points = sort_points(points)
 
     # # hull = cv.convexHull(points)
