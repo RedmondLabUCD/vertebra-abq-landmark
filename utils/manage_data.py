@@ -413,7 +413,7 @@ def gather_boundaries(row):
 
             xy_pairs = []
             
-            for i in range(78):
+            for i in range(87):
                 num_x = 18002 + (2*i)
                 num_y = 18002 + (2*i) + 1
                 if int(num_x) >= 18100:
@@ -451,38 +451,40 @@ def create_mask(image_name,xy_pairs):
     if not os.path.exists(mask_dir):
         os.makedirs(mask_dir)
 
-    points = np.array(xy_pairs)
-    sorted_points = sort_points(points)
+    # points = np.array(xy_pairs)
+    # sorted_points = sort_points(points)
 
-    # hull = cv.convexHull(points)
+    # # hull = cv.convexHull(points)
         
-    img = dcmread(os.path.join(image_dir,image_name+".dcm"))
-    img_size = img.pixel_array.shape
+    # img = dcmread(os.path.join(image_dir,image_name+".dcm"))
+    # img_size = img.pixel_array.shape
 
-    if os.path.isfile(mask_file_path):
-        mask = cv.imread(mask_file_path)
-    else: 
-        mask = np.zeros((int(img_size[0]),int(img_size[1])), dtype=np.uint8)
+    # if os.path.isfile(mask_file_path):
+    #     mask = cv.imread(mask_file_path)
+    # else: 
+    #     mask = np.zeros((int(img_size[0]),int(img_size[1])), dtype=np.uint8)
 
-    cv.fillPoly(mask,pts=[sorted_points],color=(255,255,255))
+    # cv.fillPoly(mask,pts=[sorted_points],color=(255,255,255))
 
-    mask = Image.fromarray(mask)
+    # mask = Image.fromarray(mask)
 
-    mask.save(mask_file_path)
+    # mask.save(mask_file_path)
 
-    # dicom_file_path = os.path.join(image_dir, image_name+'.dcm')
-    # dicom_image = dcmread(dicom_file_path)
-    # pixel_array = dicom_image.pixel_array
+    dicom_file_path = os.path.join(image_dir, image_name+'.dcm')
+    dicom_image = dcmread(dicom_file_path)
+    pixel_array = dicom_image.pixel_array
 
-    # # fig, ax = plt.subplots()
-    # plt.imshow(pixel_array, cmap='gray')
-    # plt.scatter(points[:10,0],points[:10,1],color='r')
-    # plt.scatter(points[10:20,0],points[10:20,1],color='b')
-    # plt.scatter(points[20:30,0],points[20:30,1],color='g')
-    # plt.scatter(points[30:40,0],points[30:40,1],color='y')
-    # plt.scatter(points[40:50,0],points[40:50,1],color='m')
-    # plt.scatter(points[50:,0],points[50:,1],color='c')
-    # plt.savefig(os.path.join(mask_dir,"test.png"))
+    # fig, ax = plt.subplots()
+    plt.imshow(pixel_array, cmap='gray')
+    plt.scatter(points[:10,0],points[:10,1],color='r')
+    plt.scatter(points[10:20,0],points[10:20,1],color='b')
+    plt.scatter(points[20:30,0],points[20:30,1],color='g')
+    plt.scatter(points[30:40,0],points[30:40,1],color='y')
+    plt.scatter(points[40:50,0],points[40:50,1],color='m')
+    plt.scatter(points[50:60,0],points[50:60,1],color='c')
+    plt.scatter(points[60:70,0],points[60:70,1],color='g',marker='*')
+    plt.scatter(points[70:,0],points[70:,1],color='b',marker='*')
+    plt.savefig(os.path.join(mask_dir,"test.png"))
 
 
 def smooth_masks():
