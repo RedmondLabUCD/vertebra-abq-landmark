@@ -45,8 +45,8 @@ def prep_data():
 
     # Loop through each row in the Excel file and process
     for index, row in df_x.iterrows():
-        create_data_file(row,df_x)
-        # gather_boundaries(row)
+        # create_data_file(row,df_x)
+        gather_boundaries(row)
         break
 
     # df2 = df.replace('', np.nan, regex=True)
