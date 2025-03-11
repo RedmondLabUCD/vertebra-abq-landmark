@@ -410,6 +410,7 @@ def gather_boundaries(row):
         img = spss_row[variable_names[group]+'_17962.'+str(vertebra)].values[0]
 
         if str(img) == str(image_name):
+            print(image_name)
 
             xy_pairs = []
             
@@ -424,7 +425,8 @@ def gather_boundaries(row):
                 xy_pairs.append([int(bx),int(by)])
 
             if len(xy_pairs) != 0:   
-                create_mask(image_name,xy_pairs)
+                print("made it to mask creation")
+                create_mask(image_name,xy_pairs,vertebra)
 
 
 def sort_points(xy: np.ndarray) -> np.ndarray:
@@ -441,7 +443,7 @@ def sort_points(xy: np.ndarray) -> np.ndarray:
     return xy[sort_result]
     
 
-def create_mask(image_name,xy_pairs):
+def create_mask(image_name,xy_pairs,vertebra):
 
     mask_dir = '//data/scratch/r094879/data/masks'
     image_dir = '//data/scratch/r094879/data/images'
@@ -484,7 +486,7 @@ def create_mask(image_name,xy_pairs):
     plt.scatter(points[50:60,0],points[50:60,1],color='c')
     plt.scatter(points[60:70,0],points[60:70,1],color='g',marker='*')
     plt.scatter(points[70:,0],points[70:,1],color='b',marker='*')
-    plt.savefig(os.path.join(mask_dir,"test.png"))
+    plt.savefig(os.path.join(mask_dir,image_name+'_'+str(vertebra)+'.png'))
 
 
 def smooth_masks():
