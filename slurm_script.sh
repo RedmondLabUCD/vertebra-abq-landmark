@@ -7,8 +7,8 @@
 #SBATCH -o /trinity/home/r094879/repositories/vertebra-abq-landmark/output/out_%j.log       ### Where to store the console output (%j is the job number)
 #SBATCH -e /trinity/home/r094879/repositories/vertebra-abq-landmark/error/error_%j.log      ### Where to store the error output
 #SBATCH --job-name=sp_lm_3  ### Name your job so you can distinguish between jobs
-#SBATCH --exclude=gpu004        ### exclude a gpu from the job
-#SBATCH --nodelist=gpu006       ### only use this gpu for the job
+###SBATCH --exclude=gpu004        ### exclude a gpu from the job
+###SBATCH --nodelist=gpu006       ### only use this gpu for the job
 
 # ----- Load the modules -----
 module purge
