@@ -454,6 +454,7 @@ def create_mask(image_name,xy_pairs,vertebra):
         os.makedirs(mask_dir)
 
     points = np.array(xy_pairs)
+    print(points)
     # sorted_points = sort_points(points)
 
     # # hull = cv.convexHull(points)
@@ -484,9 +485,10 @@ def create_mask(image_name,xy_pairs,vertebra):
     plt.scatter(points[30:40,0],points[30:40,1],color='y')
     plt.scatter(points[40:50,0],points[40:50,1],color='m')
     plt.scatter(points[50:60,0],points[50:60,1],color='c')
-    plt.scatter(points[60:70,0],points[60:70,1],color='g',marker='*')
-    plt.scatter(points[70:,0],points[70:,1],color='b',marker='*')
+    # plt.scatter(points[60:70,0],points[60:70,1],color='g',marker='*')
+    # plt.scatter(points[70:,0],points[70:,1],color='b',marker='*')
     plt.savefig(os.path.join(mask_dir,image_name+'_'+str(vertebra)+'.png'))
+    print("image saved")
 
 
 def smooth_masks():
