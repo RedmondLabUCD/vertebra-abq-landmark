@@ -45,7 +45,6 @@ def prep_data():
 
     # Loop through each row in the Excel file and process
     for index, row in df_x.iterrows():
-        print(row)
         # create_data_file(row,df_x)
         gather_boundaries(row)
 
@@ -410,7 +409,6 @@ def gather_boundaries(row):
         img = spss_row[variable_names[group]+'_17962.'+str(vertebra)].values[0]
 
         if str(img) == str(image_name):
-            print(image_name)
 
             xy_pairs = []
             
@@ -454,7 +452,6 @@ def create_mask(image_name,xy_pairs,vertebra):
         os.makedirs(mask_dir)
 
     points = np.array(xy_pairs)
-    print(points)
     # sorted_points = sort_points(points)
 
     # # hull = cv.convexHull(points)
@@ -476,7 +473,6 @@ def create_mask(image_name,xy_pairs,vertebra):
     dicom_file_path = os.path.join(image_dir, image_name+'.dcm')
     dicom_image = dcmread(dicom_file_path)
     pixel_array = dicom_image.pixel_array
-    print(pixel_array)
 
     # fig, ax = plt.subplots()
     plt.imshow(pixel_array, cmap='gray')
@@ -486,10 +482,11 @@ def create_mask(image_name,xy_pairs,vertebra):
     plt.scatter(points[30:40,0],points[30:40,1],color='y')
     plt.scatter(points[40:50,0],points[40:50,1],color='m')
     plt.scatter(points[50:60,0],points[50:60,1],color='c')
-    # plt.scatter(points[60:70,0],points[60:70,1],color='g',marker='*')
-    # plt.scatter(points[70:,0],points[70:,1],color='b',marker='*')
+    plt.scatter(points[60:70,0],points[60:70,1],color='g',marker='*')
+    plt.scatter(points[70:,0],points[70:,1],color='b',marker='*')
     plt.savefig(os.path.join(mask_dir,image_name+'_'+str(vertebra)+'.png'))
-    print("image saved")
+    # Clear the plot for the next iteration
+    plt.clf()
 
 
 def smooth_masks():
