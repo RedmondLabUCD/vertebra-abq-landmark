@@ -45,6 +45,7 @@ def prep_data():
 
     # Loop through each row in the Excel file and process
     for index, row in df_x.iterrows():
+        print(row)
         # create_data_file(row,df_x)
         gather_boundaries(row)
         break
@@ -476,6 +477,7 @@ def create_mask(image_name,xy_pairs,vertebra):
     dicom_file_path = os.path.join(image_dir, image_name+'.dcm')
     dicom_image = dcmread(dicom_file_path)
     pixel_array = dicom_image.pixel_array
+    print(pixel_array)
 
     # fig, ax = plt.subplots()
     plt.imshow(pixel_array, cmap='gray')
