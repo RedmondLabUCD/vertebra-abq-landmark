@@ -48,7 +48,6 @@ def prep_data():
         print(row)
         # create_data_file(row,df_x)
         gather_boundaries(row)
-        break
 
     # df2 = df.replace('', np.nan, regex=True)
 
