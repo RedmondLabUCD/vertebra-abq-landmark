@@ -47,6 +47,7 @@ def prep_data():
     for index, row in df_x.iterrows():
         # create_data_file(row,df_x)
         gather_boundaries(row)
+        break
 
     # df2 = df.replace('', np.nan, regex=True)
 
@@ -443,7 +444,7 @@ def sort_points(xy: np.ndarray) -> np.ndarray:
 
 def create_mask(image_name,xy_pairs,vertebra):
 
-    mask_dir = '//data/scratch/r094879/data/masks'
+    mask_dir = '//data/scratch/r094879/data/masks_test'
     image_dir = '//data/scratch/r094879/data/images'
 
     mask_file_path = os.path.join(mask_dir,image_name+'.png')
@@ -477,13 +478,13 @@ def create_mask(image_name,xy_pairs,vertebra):
     # fig, ax = plt.subplots()
     plt.imshow(pixel_array, cmap='gray')
     plt.scatter(points[:10,0],points[:10,1],color='r')
-    plt.scatter(points[10:20,0],points[10:20,1],color='b')
-    plt.scatter(points[20:30,0],points[20:30,1],color='g')
-    plt.scatter(points[30:40,0],points[30:40,1],color='y')
-    plt.scatter(points[40:50,0],points[40:50,1],color='m')
-    plt.scatter(points[50:60,0],points[50:60,1],color='c')
-    plt.scatter(points[60:70,0],points[60:70,1],color='g',marker='*')
-    plt.scatter(points[70:,0],points[70:,1],color='b',marker='*')
+    plt.scatter(points[10:20,0],points[10:20,1],color='b', size=1)
+    plt.scatter(points[20:30,0],points[20:30,1],color='g', size=1)
+    plt.scatter(points[30:40,0],points[30:40,1],color='y', size=1)
+    plt.scatter(points[40:50,0],points[40:50,1],color='m', size=1)
+    plt.scatter(points[50:60,0],points[50:60,1],color='c', size=1)
+    plt.scatter(points[60:70,0],points[60:70,1],color='g',marker='*', size=1)
+    plt.scatter(points[70:,0],points[70:,1],color='b',marker='*', size=1)
     plt.savefig(os.path.join(mask_dir,image_name+'_'+str(vertebra)+'.png'))
 
     img_test = np.asarray(Image.open(os.path.join(mask_dir,image_name+'_'+str(vertebra)+'.png')))
