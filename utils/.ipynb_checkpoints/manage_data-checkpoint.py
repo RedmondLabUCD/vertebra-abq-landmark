@@ -477,7 +477,7 @@ def create_mask(image_name,xy_pairs,vertebra):
 
     # fig, ax = plt.subplots()
     plt.imshow(pixel_array, cmap='gray')
-    p = 4
+    p = 5
     plt.scatter(points[10*p+0,0],points[10*p+0,1],color='r', marker='o', s=1)
     plt.scatter(points[10*p+1,0],points[10*p+1,1],color='b', marker='o', s=1)
     plt.scatter(points[10*p+2,0],points[10*p+2,1],color='g', marker='o', s=1)
