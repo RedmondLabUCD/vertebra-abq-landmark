@@ -477,14 +477,18 @@ def create_mask(image_name,xy_pairs,vertebra):
 
     # fig, ax = plt.subplots()
     plt.imshow(pixel_array, cmap='gray')
-    plt.scatter(points[:10,0],points[:10,1],color='r', s=1)
-    # plt.scatter(points[10:20,0],points[10:20,1],color='b', s=1)
-    # plt.scatter(points[20:30,0],points[20:30,1],color='g', s=1)
-    # plt.scatter(points[30:40,0],points[30:40,1],color='y', s=1)
-    # plt.scatter(points[40:50,0],points[40:50,1],color='m', s=1)
-    # plt.scatter(points[50:60,0],points[50:60,1],color='c', s=1)
-    # plt.scatter(points[60:70,0],points[60:70,1],color='g',marker='*', s=1)
-    # plt.scatter(points[70:,0],points[70:,1],color='b',marker='*', s=1)
+    p = 0
+    plt.scatter(points[10*p+0,0],points[10*p+0,1],color='r', s=1)
+    plt.scatter(points[10*p+1,0],points[10*p+1,1],color='b', s=1)
+    plt.scatter(points[10*p+2,0],points[10*p+2,1],color='g', s=1)
+    plt.scatter(points[10*p+3,0],points[10*p+3,1],color='y', s=1)
+    plt.scatter(points[10*p+4,0],points[10*p+4,1],color='m', s=1)
+    plt.scatter(points[10*p+5,0],points[10*p+5,1],color='c', s=1)
+    plt.scatter(points[10*p+6,0],points[10*p+6,1],color='r',marker='*', s=1)
+    plt.scatter(points[10*p+7:,0],points[10*p+7:,1],color='b',marker='*', s=1)
+    plt.scatter(points[10*p+8,0],points[10*p+8,1],color='g',marker='*', s=1)
+    plt.scatter(points[10*p+9:,0],points[10*p+9:,1],color='y',marker='*', s=1)
+
     plt.savefig(os.path.join(mask_dir,image_name+'_'+str(vertebra)+'.png'))
     # Clear the plot for the next iteration
     plt.clf()
