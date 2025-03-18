@@ -486,10 +486,6 @@ def create_mask(image_name,xy_pairs,vertebra):
     # plt.scatter(points[60:70,0],points[60:70,1],color='g',marker='*', s=1)
     # plt.scatter(points[70:,0],points[70:,1],color='b',marker='*', s=1)
     plt.savefig(os.path.join(mask_dir,image_name+'_'+str(vertebra)+'.png'))
-
-    img_test = np.asarray(Image.open(os.path.join(mask_dir,image_name+'_'+str(vertebra)+'.png')))
-    plt.imshow(img_test)
-    plt.savefig(os.path.join(mask_dir,image_name+'_'+str(vertebra)+'.png'))
     # Clear the plot for the next iteration
     plt.clf()
 
