@@ -475,7 +475,7 @@ def create_mask(image_name,xy_pairs,vertebra):
     dicom_image = dcmread(dicom_file_path)
     pixel_array = dicom_image.pixel_array
 
-    img_cropped = pixel_array[(int(points[4,0])-20):(int(points[0,0])+20), (int(points[0,1])-20):(int(points[4,1])+20)]
+    img_cropped = pixel_array[(int(points[0,1])-20):(int(points[4,1])+20), (int(points[4,0])-20):(int(points[0,0])+20)]
 
     points[:,0] = points[:,0]-(int(points[4,0])-20)
     points[:,1] = points[:,1]-(int(points[0,1])-20)
