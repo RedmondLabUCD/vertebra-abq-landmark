@@ -475,8 +475,13 @@ def create_mask(image_name,xy_pairs,vertebra):
     dicom_image = dcmread(dicom_file_path)
     pixel_array = dicom_image.pixel_array
 
+    img_cropped = pixel_array[(int(points[4,0])-20):(int(points[0,0])+20), (int(points[0,1])-20):(int(points[4,1])+20), :]
+
+    points[:,0] = points[:,0]-(int(points[4,0])-20)
+    points[:,1] = points[:,1]-(int(points[0,1])-20)
+
     # fig, ax = plt.subplots()
-    plt.imshow(pixel_array, cmap='gray')
+    plt.imshow(img_cropped, cmap='gray')
     plt.scatter(points[0,0],points[0,1],color='r', marker='o', s=0.5)
     plt.scatter(points[2,0],points[2,1],color='r', marker='o', s=0.5)
     plt.scatter(points[4,0],points[4,1],color='r', marker='o', s=0.5)
