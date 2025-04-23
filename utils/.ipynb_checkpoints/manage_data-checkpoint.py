@@ -384,7 +384,7 @@ def plot_test_images_with_points(predictions_file,name='LM1'):
         plt.clf()
 
 
-def gather_boundaries(row):
+def gather_boundaries(row,heatmap_dir,tl_dir,avg_y):
 
     vertebra_list = ['T4','T5','T6','T7','T8','T9','T10','T11','T12','L1','L2','L3','L4']
     variable_names = {'RSI_1':'e1','RSI_2':'e2','RSI_3':'e3','RSI_4':'e4','RSII_2':'e4','RSIII_1':'ej'}
@@ -405,7 +405,7 @@ def gather_boundaries(row):
         return
 
     # For each vertebra, get image name and x, y coordinates
-    for vertebra in vertebra_list:
+    for index,vertebra in enumerate(vertebra_list):
         
         img = spss_row[variable_names[group]+'_17962.'+str(vertebra)].values[0]
 
@@ -425,7 +425,8 @@ def gather_boundaries(row):
 
             if len(xy_pairs) != 0:   
                 print("made it to mask creation")
-                create_mask(image_name,xy_pairs,vertebra)
+                create_roi_hm(image_name,xy_pairs,save_dir=heatmap_dir,
+                     tl_dir=tl_dir,avg_y,vertebra=index)
 
 
 def sort_points(xy: np.ndarray) -> np.ndarray:
@@ -599,12 +600,20 @@ def create_dataset():
     dicom_dir = '//data/scratch/r094879/data/images'
     output_dir = '//data/scratch/r094879/data/heatmaps'
     output_dir_2 = '//data/scratch/r094879/data/imgs'
+    output_dir_3 = '//data/scratch/r094879/data/roi_heatmaps'
+    output_dir_4 = '//data/scratch/r094879/data/roi_imgs'
+    output_dir_5 = '//data/scratch/r094879/data/roi_tls'
     
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
-
     if not os.path.exists(output_dir_2):
         os.makedirs(output_dir_2)
+    if not os.path.exists(output_dir_3):
+        os.makedirs(output_dir_3)
+    if not os.path.exists(output_dir_4):
+        os.makedirs(output_dir_4)
+    if not os.path.exists(output_dir_5):
+        os.makedirs(output_dir_5)
 
     for index, row in df.iterrows():
         image_name = row['image']  # Get the DICOM image name from the 'image' column
@@ -613,6 +622,8 @@ def create_dataset():
         # Read the DICOM file
         dicom_image = dcmread(dicom_file_path)
         img = dicom_image.pixel_array
+
+        image_size = img.shape()
         # img = img.astype(float)
         # img = (img-img.min())/(img.max()-img.min())*255.0
         # img = img.astype(np.uint8)
@@ -670,11 +681,25 @@ def create_dataset():
         x_values = row.iloc[3:29:2].values 
         y_values = row.iloc[4:29:2].values
 
+        dists = np.array()
+        for i in range(len(y_values)-1):
+            if y_values[i] != nan and y_values[i+1] != nan:
+                dist = abs(y_values[i]-y_values[i+1])
+                dists.append(dist)
+
+        avg_y = np.mean(dists)
+
+        print(avg_y)  
+
         # Combine x and y values and filter out NaN pairs
         xy_pairs = np.array(list(zip(x_values, y_values)))
 
-        hm = create_hm(xy_pairs,(float(img.shape[1]),float(img.shape[0])),new_dim=256.0,size=5)
-        np.save(os.path.join(output_dir,image_name),hm)
+        # hm = create_hm(xy_pairs,(float(img.shape[1]),float(img.shape[0])),new_dim=256.0,size=5)
+        # np.save(os.path.join(output_dir,image_name),hm)
+        
+        extract_ROI_from_lm(image_name,img,xy_pairs,image_size,dim=avg_y,save_dir=output_dir_4,tl_dir=output_dir_5)
+
+        gather_boundaries(row,output_dir_3,output_dir_5,avg_y)  
 
 
 def view_heatmaps():
@@ -711,70 +736,3 @@ def view_heatmaps():
     plt.title("Cumulative Sum of All Slices")
     plt.savefig("//data/scratch/r094879/data/data_check/cumulative_sum.png")
     plt.close()
-
-
-
-# output_filename_prefix = 'volume_data'
-
-# def write_tensor_label_hdf5(mat_filelist):
-#     """ We will use constant label (class 0) for the test data """
-#     tensor_filenames = [line.rstrip() for line in open(mat_filelist, 'r')]
-#     img_size=256
-
-#     N = len(tensor_filenames)
-
-#     # =============================================================================
-#     # Specify what data and label to write, CHNAGE this according to your needs...
-#     data_dim = [img_size,img_size,1]
-#     hm_dim = [img_size,img_size,13]
-#     data_dtype = 'uint8'
-#     label_dtype = 'uint8'
-#     # =============================================================================
-    
-#     h5_batch_size = N
-    
-#     # set batch buffer
-#     batch_data_dim = [N] + data_dim
-#     batch_hm_dim = [N] + hm_dim
-#     h5_batch_data = np.zeros(batch_data_dim)
-#     h5_batch_hm = np.zeros(batch_hm_dim)
-    
-#     for k in range(N):
-#         mat = sio.loadmat(tensor_filenames[k])
-#         d = mat[mat.keys()[0]]
-#         l = labels[k]
-
-#         h5_batch_data[k, ...] = d
-#         h5_batch_hm[k, ...] = l
-        
-#         if (k+1)%h5_batch_size == 0 or k==N-1:
-#             print '[%s] %d/%d' % (datetime.datetime.now(), k+1, N)
-#             print 'batch data shape: ', h5_batch_data.shape
-#             h5_filename = output_filename_prefix+str(k/h5_batch_size)+'.h5'
-#             print h5_filename
-#             print np.shape(h5_batch_data)
-#             print np.shape(h5_batch_label)
-#             begidx = 0
-#             endidx = min(h5_batch_size, (k%h5_batch_size)+1) 
-#             print h5_filename, data_dtype, label_dtype
-#             save_h5(h5_filename, h5_batch_data[begidx:endidx,:,:,:,:], h5_batch_label[begidx:endidx,:], data_dtype, label_dtype) 
-
-
-# write_tensor_label_hdf5('mat_filelist.txt', 26, 3)
-# (d,l) = load_h5(output_filename_prefix+'0.h5')
-# print d.shape
-# print l.shape
-
-# def save_h5(h5_filename, data, label, data_dtype='uint8', label_dtype='uint8'):
-#     h5_fout = h5py.File(h5_filename)
-#     h5_fout.create_dataset(
-#             'images', data=data,
-#             compression='gzip', compression_opts=4,
-#             dtype=data_dtype,
-#     )
-#     h5_fout.create_dataset(
-#             'heatmaps', data=label,
-#             compression='gzip', compression_opts=1,
-#             dtype=label_dtype,
-#     )
-#     h5_fout.close()

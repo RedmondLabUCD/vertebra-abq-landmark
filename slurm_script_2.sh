@@ -25,6 +25,8 @@ source /trinity/home/r094879/vertebra-detection/bin/activate
 # python final_training.py UNet_LM_CL2 --custom_loss True --ckpt "Checkpoint/Test2"
 # python final_training.py UNet_deep_CL2 --custom_loss True
 # python test.py UNet_LM_CL --ckpt "Checkpoint/Test1"
-python test.py UNet_LM_CL2 --ckpt "Checkpoint/Test1"
-python test.py UNet_LM_CL3 --ckpt "Checkpoint/Test1"
-python test.py UNet_LM --ckpt "Checkpoint/Test2"
+# python test.py UNet_LM_CL2 --ckpt "Checkpoint/Test1"
+# python test.py UNet_LM_CL3 --ckpt "Checkpoint/Test1"
+# python test.py UNet_LM --ckpt "Checkpoint/Test2"
+
+python main.py

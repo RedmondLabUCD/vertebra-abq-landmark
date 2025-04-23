@@ -9,6 +9,8 @@ from utils.feature_extraction import get_contours
 from utils.landmark_prep import resize_lm
 import cv2
 import matplotlib.pyplot as plt
+from scipy.interpolate import splprep, splev
+from scipy.ndimage import gaussian_filter
 
 
 def create_hm(landmarks,old_dim,new_dim,size=3):
@@ -24,87 +26,85 @@ def create_hm(landmarks,old_dim,new_dim,size=3):
     hm = generate_hm(lm,new_dim,s=size)
                            
     return hm
+    
+
+def resize_coords(points, tl_dir, vertebra):
+
+    df = pd.read_csv(os.path.join(tl_dir,filename+".csv"))
+    x_tl = df.iloc[vertebra,1]
+    y_tl = df.iloc[vertebra,2]
+    
+    scale_points[:,0] = points[:,0] - x_tl
+    scale_points[:,1] = points[:,1] - y_tl
+    return scale_points
+
+    
+def interpolate_curve(points, num_points=300):
+    
+    x, y = points[:, 0], points[:, 1]
+    tck, u = splprep([x, y], s=0)
+    u_new = np.linspace(0, 1, num_points)
+    x_new, y_new = splev(u_new, tck)
+    return np.stack([x_new, y_new], axis=1)
 
 
-def pb_create_hm_aug(current_dir,filename,landmarks,image_size,save_dir="ROI LM Heatmaps AUG",
-                     tl_dir="ROI LM Top-Lefts AUG",dim=128,size=3):
+def create_roi_hm(filename,landmarks,save_dir="ROI LM Heatmaps",
+                     tl_dir="ROI LM Top-Lefts",y_avg,vertebra=0):
     '''
     Creates local heatmaps for Plan B isolate landmark ROIs.
+    
     '''
     lm = landmarks.copy()
-    lm = np.nan_to_num(landmarks)
+    tl_dir = '//data/scratch/r094879/data/roi_tls'
+    
+    scale_points = resize_coords(lm,tl_dir,vertebra+1)
+    rp = resize_lm(scale_points,[y_avg,y_avg],[256,256])
 
-    tls = pd.read_csv(os.path.join(current_dir,tl_dir,filename +".csv"))
-    tls = np.asarray(tls).astype(float)
+    endplate_top_x = [rp[11,0],rp[64,0],rp[65,0],rp[66,0],rp[67,0],rp[68,0],rp[69,0],rp[70,0],rp[71,0],rp[72,0],
+                     rp[73,0],rp[74,0],rp[75,0],rp[76,0],rp[77,0],rp[78,0],rp[0,0]]
+    endplate_top_y = [rp[11,1],rp[64,1],rp[65,1],rp[66,1],rp[67,1],rp[68,1],rp[69,1],rp[70,1],rp[71,1],rp[72,1],
+                     rp[73,1],rp[74,1],rp[75,1],rp[76,1],rp[77,1],rp[78,1],rp[0,1]]
+    endplate_top = np.array(list(zip(endplate_top_x,endplate_top_y)))
+    
+    endplate_bottom_x = [rp[3,0],rp[37,0],rp[38,0],rp[39,0],rp[40,0],rp[41,0],rp[42,0],rp[43,0],rp[44,0],rp[45,0],
+                     rp[46,0],rp[47,0],rp[48,0],rp[10,0]]
+    endplate_bottom_y = [rp[3,1],rp[37,1],rp[38,1],rp[39,1],rp[40,1],rp[41,1],rp[42,1],rp[43,1],rp[44,1],rp[45,1],
+                     rp[46,1],rp[47,1],rp[48,1],rp[10,1]]
+    endplate_bottom = np.array(list(zip(endplate_bottom_x,endplate_bottom_y)))
+    
+    interp_points_top = interpolate_curve(endplate_top,num_points=100)
+    interp_points_bottom = interpolate_curve(endplate_bottom,num_points=100)
 
-    for tl in tls:
-        if int(lm[int(tl[0]-1),1]) != 0 and int(lm[int(tl[0]-1),1]) != 0:
-            if tl[0] < 12: 
-                lm_new = np.empty((11,2))
-                lm_new[:] = np.nan
+    heatmap = np.zeros([256,256,2], dtype=np.float32)
+    for x, y in interp_points_top.astype(int):
+        if 0 <= x < target_size[1] and 0 <= y < target_size[0]:
+            heatmap[y, x, 0] = 1.0
 
-                for i in range(11):
-                    lms = lm[i,:]
-                    if lms[0]-tl[1] < dim and lms[0]-tl[1] >= 0 and lms[1]-tl[2] < dim and lms[1]-tl[2] >= 0:
-                        lm_new[i,0] = lms[0]-tl[1]
-                        lm_new[i,1] = lms[1]-tl[2]
+    for x, y in interp_points_bottom.astype(int):
+        if 0 <= x < target_size[1] and 0 <= y < target_size[0]:
+            heatmap[y, x, 1] = 1.0
+    
+    # Optional: Apply Gaussian blur to create smooth heatmap
+    heatmap = gaussian_filter(heatmap, sigma=2)
 
-                hm = generate_hm(lm_new,dim,s=size)
-#                 np.save(os.path.join(current_dir,save_dir,
-#                                          filename+"_r_"+str(int(tl[0]))+"_0"),hm)
-                np.save(os.path.join(current_dir,save_dir,
-                                         filename+"_r_"+str(int(tl[0]))+"_" + str(int(tl[3]))),hm)
-                
-#                 print("Right " + str(tl[0]) + " " + str(tl[3]))
-#                 print(os.path.join(current_dir,"ROI LMs", filename +"_r_"+str(int(tl[0]))+"_" + str(int(tl[3])) +".png"))
-#                 img = cv2.imread(os.path.join(current_dir,"ROI LMs AUG",
-#                                               filename +"_r_"+str(int(tl[0]))+"_" + str(int(tl[3])) +".png"))
-#                 fig = plt.figure(figsize=(20,6))
-#                 plt.imshow(img[:,:,0],cmap="gray")
-#                 plt.show()
+    np.save(os.path.join(save_dir,filename+"_"+str(vertebra+1) +".npy"),heatmap)
 
-#                 fig = plt.figure(figsize=(18,10))
-#                 for j in range(12):
-#                     ax = fig.add_subplot(2,6,j+1)
-#                     ax.imshow(hm[:,:,j])
-#                 plt.show()
-                
-            elif tl[0] >= 12: 
-                lm_new = np.empty((11,2))
-                lm_new[:] = np.nan
+    if not os.path.exists("//data/scratch/r094879/data/data_check/cumulative_sum_roi"):
+        os.makedirs("//data/scratch/r094879/data/data_check/cumulative_sum_roi")
+    
+    hm = heatmap[:,:,0] + heatmap[:,:,1]
+    plt.imshow(hm, cmap='gray')
+    plt.title("Cumulative Sum of All Slices")
+    plt.savefig("//data/scratch/r094879/data/data_check/cumulative_sum_roi",image_name+"_"+(vertebra+1)+".png")
+    plt.close()
 
-                for i in range(11,22):
-                    lms = lm[i,:]
-                    if lms[0]-tl[1] < dim and lms[0]-tl[1] >= 0 and lms[1]-tl[2] < dim and lms[1]-tl[2] >= 0:
-                        lm_new[i-11,0] = -lms[0] + (tl[1] + (dim-1))
-                        lm_new[i-11,1] = lms[1]-tl[2]
-                        
-                hm = generate_hm(lm_new,dim,s=size)
-#                 np.save(os.path.join(current_dir,save_dir,
-#                                          filename+"_l_"+str(int(tl[0]))),hm)
-                np.save(os.path.join(current_dir,save_dir,
-                                         filename+"_l_"+str(int(tl[0]))+"_" + str(int(tl[3]))),hm)
 
-#                 print("Left " + str(tl[0]) + " " + str(tl[3]))
-#                 img = cv2.imread(os.path.join(current_dir,"ROI LMs AUG",
-#                                               filename +"_l_"+str(int(tl[0]))+"_" + str(int(tl[3])) +".png"))
-#                 fig = plt.figure(figsize=(20,6))
-#                 plt.imshow(img[:,:,0],cmap="gray")
-#                 plt.show()
-
-#                 fig = plt.figure(figsize=(18,10))
-#                 for j in range(12):
-#                     ax = fig.add_subplot(2,6,j+1)
-#                     ax.imshow(hm[:,:,j])
-#                 plt.show()
-
-                
 def gaussian_k(x0,y0,sigma,height,width):
         x = np.arange(0,height,1,float) ## (width,)
         y = np.arange(0,width,1,float)[:,np.newaxis] ## (height,1)
         return np.exp(-((x-x0)**2 + (y-y0)**2)/(2*sigma**2))
 
-    
+
 def generate_hm(landmarks,dim,s=3):
         ''' 
         Generate a full Heap Map for every landmarks in an array
