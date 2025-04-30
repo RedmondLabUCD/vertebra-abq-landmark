@@ -4,9 +4,9 @@
 #SBATCH -p short           ### The queue to submit to: express, short, long, interactive
 #SBATCH --gres=gpu:1         ### How many GPUs do you need?
 #SBATCH -t 0-24:00:00        ### The time limit in D-hh:mm:ss format
-#SBATCH -o /trinity/home/r094879/repositories/vertebra-identification/output/out_%j.log       ### Where to store the console output (%j is the job number)
-#SBATCH -e /trinity/home/r094879/repositories/vertebra-identification/error/error_%j.log      ### Where to store the error output
-#SBATCH --job-name=sp_lm_2  ### Name your job so you can distinguish between jobs
+#SBATCH -o /trinity/home/r094879/repositories/vertebra-abq-landmark/output/out_%j.log       ### Where to store the console output (%j is the job number)
+#SBATCH -e /trinity/home/r094879/repositories/vertebra-abq-landmark/error/error_%j.log      ### Where to store the error output
+#SBATCH --job-name=endplate  ### Name your job so you can distinguish between jobs
 #SBATCH --exclude=gpu004        ### exclude a gpu from the job
 #SBATCH --nodelist=gpu006       ### only use this gpu for the job
 
@@ -19,7 +19,7 @@ source "/tmp/${SLURM_JOB_USER}.${SLURM_JOB_ID}/prolog.env"
 
 # ----- Activate virtual environment -----
 # Do this after loading python module
-source /trinity/home/r094879/vertebra-detection/bin/activate
+source /trinity/home/r094879/vertebra-abq-landmark/bin/activate
 
 # ----- Your tasks -----
 # python final_training.py UNet_LM_CL2 --custom_loss True --ckpt "Checkpoint/Test2"
