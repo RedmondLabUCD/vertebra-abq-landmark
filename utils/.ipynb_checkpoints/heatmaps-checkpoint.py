@@ -48,8 +48,8 @@ def interpolate_curve(points, num_points=300):
     return np.stack([x_new, y_new], axis=1)
 
 
-def create_roi_hm(filename,landmarks,save_dir="ROI LM Heatmaps",
-                     tl_dir="ROI LM Top-Lefts",y_avg,vertebra=0):
+def create_roi_hm(filename,landmarks,y_avg,save_dir="ROI LM Heatmaps",
+                     tl_dir="ROI LM Top-Lefts",vertebra=0):
     '''
     Creates local heatmaps for Plan B isolate landmark ROIs.
     

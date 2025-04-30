@@ -425,8 +425,7 @@ def gather_boundaries(row,heatmap_dir,tl_dir,avg_y):
 
             if len(xy_pairs) != 0:   
                 print("made it to mask creation")
-                create_roi_hm(image_name,xy_pairs,save_dir=heatmap_dir,
-                     tl_dir=tl_dir,avg_y,vertebra=index)
+                create_roi_hm(image_name,xy_pairs,avg_y,save_dir=heatmap_dir,tl_dir=tl_dir,vertebra=index)
 
 
 def sort_points(xy: np.ndarray) -> np.ndarray:
