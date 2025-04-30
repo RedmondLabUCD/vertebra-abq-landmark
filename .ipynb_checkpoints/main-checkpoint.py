@@ -3,6 +3,7 @@ from utils.manage_data import prep_data, plot_images_with_points, create_dataset
 
 if __name__ == '__main__':
 
+    print("made it to main")
     create_dataset()
     # plot_images_with_points()
     # prep_data()
