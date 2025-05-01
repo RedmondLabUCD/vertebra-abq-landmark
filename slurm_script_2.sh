@@ -17,7 +17,7 @@ source "/tmp/${SLURM_JOB_USER}.${SLURM_JOB_ID}/prolog.env"
 
 # ----- Activate virtual environment -----
 # Do this after loading python module
-source /trinity/home/r094879/vertebra-abq-landmark/bin/activate
+source /trinity/home/r094879/vertebra-detection/bin/activate
 
 # ----- Your tasks -----
 # python final_training.py UNet_LM_CL2 --custom_loss True --ckpt "Checkpoint/Test2"
