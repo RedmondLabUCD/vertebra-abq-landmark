@@ -12,7 +12,7 @@ import random
 from utils.feature_extraction import femhead_centre, get_contours
 
         
-def extract_ROI_from_lm(image_name,img,xy_pairs,image_size,dim=avg_y,save_dir=output_dir_3,tl_dir=output_dir_5):
+def extract_ROI_from_lm(image_name,img,xy_pairs,image_size,dim=200,save_dir="/data/scratch/r094879/data/test",tl_dir="/data/scratch/r094879/data/test"):
     '''
     Given the image and the ROI mask, the ROI section of the image is extracted and saved.
     This same function is used to extract the ROI section of the femhead masks.
