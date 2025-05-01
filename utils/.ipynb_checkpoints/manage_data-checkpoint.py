@@ -2,8 +2,8 @@
 import numpy as np
 import pandas as pd 
 import os
-from PIL import Image
 import PIL
+from PIL import Image
 import itertools
 import math
 from glob import glob
@@ -23,7 +23,6 @@ from pydicom.pixel_data_handlers.util import apply_voi_lut
 import matplotlib.pyplot as plt
 from matplotlib.lines import Line2D
 import statistics
-# import h5py
     
 
 def prep_data():
