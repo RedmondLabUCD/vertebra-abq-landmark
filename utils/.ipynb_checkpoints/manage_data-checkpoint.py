@@ -15,7 +15,7 @@ import seaborn as sns
 import scipy
 import pyreadstat
 from pydicom import dcmread
-from utils.roi_functions import create_ROI_mask, extract_ROI, resize_roi_lm, extract_ROI_from_lm, extract_ROI_from_lm_aug, extract_ROI_from_lm_aug2
+from utils.roi_functions import resize_roi_lm, extract_ROI_from_lm
 from utils.heatmaps import create_hm
 from utils.feature_extraction import extract_image_size
 import cv2 as cv
