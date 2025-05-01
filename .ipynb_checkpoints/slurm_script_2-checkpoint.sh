@@ -7,6 +7,7 @@
 #SBATCH -o /trinity/home/r094879/repositories/vertebra-abq-landmark/output/out_%j.log       ### Where to store the console output (%j is the job number)
 #SBATCH -e /trinity/home/r094879/repositories/vertebra-abq-landmark/error/error_%j.log      ### Where to store the error output
 #SBATCH --job-name=endplate  ### Name your job so you can distinguish between jcd .. obs
+#SBATCH --exclude=gpu004        ### exclude a gpu from the job
 
 # ----- Load the modules -----
 module purge
