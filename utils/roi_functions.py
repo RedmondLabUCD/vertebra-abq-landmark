@@ -23,7 +23,7 @@ def extract_ROI_from_lm(image_name,img,xy_pairs,image_size,dim=200,save_dir="/da
     # Define array to collect the centre coordinates, landmark number, 
     # and off-centre number for each coordinate
     tl = np.zeros((13,3))
-    tl[:,0] = range(1,13)
+    tl[:,0] = range(1,14)
     
     # All points will have an ROI where they are at the centre
     width = dim/2
