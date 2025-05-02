@@ -621,7 +621,7 @@ def create_dataset():
         dicom_image = dcmread(dicom_file_path)
         img = dicom_image.pixel_array
 
-        image_size = img.size()
+        image_size = img.shape
         # img = img.astype(float)
         # img = (img-img.min())/(img.max()-img.min())*255.0
         # img = img.astype(np.uint8)
