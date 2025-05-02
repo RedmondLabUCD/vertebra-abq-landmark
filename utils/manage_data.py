@@ -679,7 +679,7 @@ def create_dataset():
         x_values = row.iloc[3:29:2].values 
         y_values = row.iloc[4:29:2].values
 
-        dists = np.array()
+        dists = np.empty(0)
         for i in range(len(y_values)-1):
             if y_values[i] != nan and y_values[i+1] != nan:
                 dist = abs(y_values[i]-y_values[i+1])
