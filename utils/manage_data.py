@@ -681,7 +681,7 @@ def create_dataset():
 
         dists = np.empty(0)
         for i in range(len(y_values)-1):
-            if !math.isnan(y_values[i]) and !math.isnan(y_values[i+1]):
+            if not math.isnan(y_values[i]) and not math.isnan(y_values[i+1]):
                 dist = abs(y_values[i]-y_values[i+1])
                 dists.append(dist)
 
