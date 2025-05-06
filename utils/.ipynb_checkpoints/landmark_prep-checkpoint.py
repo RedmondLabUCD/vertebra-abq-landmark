@@ -10,7 +10,11 @@ def resize_lm(points,old_dim,new_dim):
     '''
     Rescale landmarks to suit a change in the corresponding image size.
     '''
+
+    print(points)
     landmarks = np.array(points)
+
+    print(landmarks)
     
     landmarks[:,0] = landmarks[:,0] * new_dim/old_dim[0]
     landmarks[:,1] = landmarks[:,1] * new_dim/old_dim[1]
