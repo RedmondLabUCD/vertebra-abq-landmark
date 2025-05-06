@@ -38,9 +38,10 @@ def resize_coords(points, tl_dir, filename, vertebra):
 
     print(points)
     
-    scale_points[:,0] = points[:,0] - np.ones(len(points[:,0]))*x_tl
-    scale_points[:,1] = points[:,1] - np.ones(len(points[:,0]))*y_tl
-    return scale_points
+    points[:,0] = points[:,0] - np.ones(len(points[:,0]))*x_tl
+    points[:,1] = points[:,1] - np.ones(len(points[:,0]))*y_tl
+    
+    return points
 
     
 def interpolate_curve(points, num_points=300):
