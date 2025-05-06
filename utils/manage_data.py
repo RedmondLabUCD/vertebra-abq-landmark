@@ -687,8 +687,6 @@ def create_dataset():
 
         avg_y = np.mean(dists)
 
-        print(avg_y)  
-
         # Combine x and y values and filter out NaN pairs
         xy_pairs = np.array(list(zip(x_values, y_values)))
         print(xy_pairs)
