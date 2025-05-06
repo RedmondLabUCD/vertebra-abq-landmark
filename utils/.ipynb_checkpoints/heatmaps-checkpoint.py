@@ -33,8 +33,14 @@ def resize_coords(points, tl_dir, filename, vertebra):
     df = pd.read_csv(os.path.join(tl_dir,filename+".csv"))
     x_tl = df.iloc[vertebra,1]
     y_tl = df.iloc[vertebra,2]
+
+    print(points[:,0])
+    print(np.ones(len(scale_points[:,0]))*x_tl)
+
+    points = np.array(points)
     
-    scale_points = [point[0]-x_tl and point[1]-y_tl for point in points]
+    scale_points[:,0] = points[:,0] - np.ones(len(points[:,0]))*x_tl
+    scale_points[:,1] = points[:,1] - np.ones(len(points[:,0]))*y_tl
     return scale_points
 
     
