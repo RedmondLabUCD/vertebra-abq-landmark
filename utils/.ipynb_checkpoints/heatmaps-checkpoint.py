@@ -28,7 +28,7 @@ def create_hm(landmarks,old_dim,new_dim,size=3):
     return hm
     
 
-def resize_coords(points, tl_dir, vertebra):
+def resize_coords(points, tl_dir, filename, vertebra):
 
     df = pd.read_csv(os.path.join(tl_dir,filename+".csv"))
     x_tl = df.iloc[vertebra,1]
@@ -57,7 +57,7 @@ def create_roi_hm(filename,landmarks,y_avg,save_dir="ROI LM Heatmaps",
     lm = landmarks.copy()
     tl_dir = '//data/scratch/r094879/data/roi_tls'
     
-    scale_points = resize_coords(lm,tl_dir,vertebra+1)
+    scale_points = resize_coords(lm,tl_dir,filename,vertebra+1)
     rp = resize_lm(scale_points,[y_avg,y_avg],[256,256])
 
     endplate_top_x = [rp[11,0],rp[64,0],rp[65,0],rp[66,0],rp[67,0],rp[68,0],rp[69,0],rp[70,0],rp[71,0],rp[72,0],
