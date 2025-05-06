@@ -41,12 +41,12 @@ def extract_ROI_from_lm(image_name,img,xy_pairs,image_size,dim=200,save_dir="/da
             # Define and save cropped ROI
             cropped_img_r = img[int(lm[i,1]-width):int(lm[i,1]+width),
                                 int(lm[i,0]-width):int(lm[i,0]+width)]
-            cv.imwrite(os.path.join(save_dir,filename+"_"+str(i+1) +".png"),cropped_img_r)
+            cv.imwrite(os.path.join(save_dir,image_name+"_"+str(i+1) +".png"),cropped_img_r)
 
             # Collect the top-left coordinate of the ROI 
             tl[i] = [i+1,lm[i,0]-width,lm[i,1]-width]
                 
-    pd.DataFrame(tl).to_csv(os.path.join(tl_dir,filename+".csv"),index=False)
+    pd.DataFrame(tl).to_csv(os.path.join(tl_dir,image_name+".csv"),index=False)
 
 
 def resize_roi_lm(landmarks, contr, contl):
