@@ -19,6 +19,8 @@ def extract_ROI_from_lm(image_name,img,xy_pairs,image_size,dim=200,save_dir="/da
     '''
 
     lm = xy_pairs.copy()
+
+    print(lm)
     
     # Define array to collect the centre coordinates, landmark number, 
     # and off-centre number for each coordinate
@@ -45,6 +47,8 @@ def extract_ROI_from_lm(image_name,img,xy_pairs,image_size,dim=200,save_dir="/da
 
             # Collect the top-left coordinate of the ROI 
             tl[i] = [i+1,lm[i,0]-width,lm[i,1]-width]
+
+    print(tl)
                 
     pd.DataFrame(tl).to_csv(os.path.join(tl_dir,image_name+".csv"),index=False)
 
