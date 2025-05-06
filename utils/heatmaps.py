@@ -31,8 +31,8 @@ def create_hm(landmarks,old_dim,new_dim,size=3):
 def resize_coords(points, tl_dir, filename, vertebra):
 
     df = pd.read_csv(os.path.join(tl_dir,filename+".csv"))
-    x_tl = df.iloc[vertebra,1]
-    y_tl = df.iloc[vertebra,2]
+    x_tl = df.iloc[vertebra+1,1]
+    y_tl = df.iloc[vertebra+1,2]
 
     points = np.array(points)
 
