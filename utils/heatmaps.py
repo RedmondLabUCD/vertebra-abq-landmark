@@ -34,12 +34,18 @@ def resize_coords(points, tl_dir, filename, vertebra):
     x_tl = df.iloc[vertebra+1,1]
     y_tl = df.iloc[vertebra+1,2]
 
+    print(x_tl)
+    print(y_tl)
     points = np.array(points)
 
     print(points)
     
     points[:,0] = points[:,0] - np.ones(len(points[:,0]))*x_tl
     points[:,1] = points[:,1] - np.ones(len(points[:,0]))*y_tl
+
+    print("altered points")
+
+    print(points)
     
     return points
 
