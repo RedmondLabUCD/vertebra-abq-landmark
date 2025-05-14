@@ -64,7 +64,7 @@ def create_roi_hm(filename,landmarks,y_avg,save_dir="ROI LM Heatmaps",
     rp = resize_lm(scale_points,[y_avg,y_avg],[256,256])
 
     endplate_top_x = [rp[11,0],rp[64,0],rp[65,0],rp[66,0],rp[67,0],rp[68,0],rp[69,0],rp[70,0],rp[71,0],rp[72,0],
-                     rp[73,0],rp[74,0],rp[75,0],rp[0,0]]
+                     rp[73,0],rp[74,0],rp[75,0], rp[0,0]]
     endplate_top_y = [rp[11,1],rp[64,1],rp[65,1],rp[66,1],rp[67,1],rp[68,1],rp[69,1],rp[70,1],rp[71,1],rp[72,1],
                      rp[73,1],rp[74,1],rp[75,1],rp[0,1]]
 
@@ -78,6 +78,8 @@ def create_roi_hm(filename,landmarks,y_avg,save_dir="ROI LM Heatmaps",
                      rp[46,0],rp[47,0],rp[48,0],rp[10,0]]
     endplate_bottom_y = [rp[3,1],rp[37,1],rp[38,1],rp[39,1],rp[40,1],rp[41,1],rp[42,1],rp[43,1],rp[44,1],rp[45,1],
                      rp[46,1],rp[47,1],rp[48,1],rp[10,1]]
+    print(endplate_top_x)
+    print(endplate_top_y)
     endplate_bottom = np.array(list(zip(endplate_bottom_x,endplate_bottom_y)))
     
     interp_points_top = interpolate_curve(endplate_top,num_points=500)
