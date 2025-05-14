@@ -34,18 +34,10 @@ def resize_coords(points, tl_dir, filename, vertebra):
     x_tl = df.iloc[vertebra,1]
     y_tl = df.iloc[vertebra,2]
 
-    print(x_tl)
-    print(y_tl)
     points = np.array(points)
-
-    print(points)
     
     points[:,0] = points[:,0] - np.ones(len(points[:,0]))*x_tl
     points[:,1] = points[:,1] - np.ones(len(points[:,0]))*y_tl
-
-    print("altered points")
-
-    print(points)
     
     return points
 
@@ -88,11 +80,11 @@ def create_roi_hm(filename,landmarks,y_avg,save_dir="ROI LM Heatmaps",
 
     heatmap = np.zeros([256,256,2], dtype=np.float32)
     for x, y in interp_points_top.astype(int):
-        if 0 <= x < target_size[1] and 0 <= y < target_size[0]:
+        if 0 <= x < 256 and 0 <= y < 256:
             heatmap[y, x, 0] = 1.0
 
     for x, y in interp_points_bottom.astype(int):
-        if 0 <= x < target_size[1] and 0 <= y < target_size[0]:
+        if 0 <= x < 256 and 0 <= y < 256:
             heatmap[y, x, 1] = 1.0
     
     # Optional: Apply Gaussian blur to create smooth heatmap

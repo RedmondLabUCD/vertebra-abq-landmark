@@ -19,8 +19,6 @@ def extract_ROI_from_lm(image_name,img,xy_pairs,image_size,dim=200,save_dir="/da
     '''
 
     lm = xy_pairs.copy()
-
-    print(lm)
     
     # Define array to collect the centre coordinates, landmark number, 
     # and off-centre number for each coordinate
