@@ -75,8 +75,8 @@ def create_roi_hm(filename,landmarks,y_avg,save_dir="ROI LM Heatmaps",
                      rp[46,1],rp[47,1],rp[48,1],rp[10,1]]
     endplate_bottom = np.array(list(zip(endplate_bottom_x,endplate_bottom_y)))
     
-    interp_points_top = interpolate_curve(endplate_top,num_points=100)
-    interp_points_bottom = interpolate_curve(endplate_bottom,num_points=100)
+    interp_points_top = interpolate_curve(endplate_top,num_points=500)
+    interp_points_bottom = interpolate_curve(endplate_bottom,num_points=500)
 
     heatmap = np.zeros([256,256,2], dtype=np.float32)
     for x, y in interp_points_top.astype(int):
