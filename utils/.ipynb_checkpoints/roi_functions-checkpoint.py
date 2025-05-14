@@ -28,7 +28,7 @@ def extract_ROI_from_lm(image_name,img,xy_pairs,image_size,dim=200,save_dir="/da
     tl[:,0] = range(1,14)
     
     # All points will have an ROI where they are at the centre
-    width = int(dim/2)
+    width = int(dim/3)*2
     
     for i in range(13):
         if not math.isnan(lm[i,1]):
