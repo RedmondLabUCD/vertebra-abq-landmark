@@ -31,8 +31,8 @@ def create_hm(landmarks,old_dim,new_dim,size=3):
 def resize_coords(points, tl_dir, filename, vertebra):
 
     df = pd.read_csv(os.path.join(tl_dir,filename+".csv"))
-    x_tl = df.iloc[vertebra+1,1]
-    y_tl = df.iloc[vertebra+1,2]
+    x_tl = df.iloc[vertebra,1]
+    y_tl = df.iloc[vertebra,2]
 
     print(x_tl)
     print(y_tl)
@@ -68,7 +68,7 @@ def create_roi_hm(filename,landmarks,y_avg,save_dir="ROI LM Heatmaps",
     lm = landmarks.copy()
     tl_dir = '//data/scratch/r094879/data/roi_tls'
     
-    scale_points = resize_coords(lm,tl_dir,filename,vertebra+1)
+    scale_points = resize_coords(lm,tl_dir,filename,vertebra)
     rp = resize_lm(scale_points,[y_avg,y_avg],[256,256])
 
     endplate_top_x = [rp[11,0],rp[64,0],rp[65,0],rp[66,0],rp[67,0],rp[68,0],rp[69,0],rp[70,0],rp[71,0],rp[72,0],
@@ -98,7 +98,7 @@ def create_roi_hm(filename,landmarks,y_avg,save_dir="ROI LM Heatmaps",
     # Optional: Apply Gaussian blur to create smooth heatmap
     heatmap = gaussian_filter(heatmap, sigma=2)
 
-    np.save(os.path.join(save_dir,filename+"_"+str(vertebra+1) +".npy"),heatmap)
+    np.save(os.path.join(save_dir,filename+"_"+str(vertebra) +".npy"),heatmap)
 
     if not os.path.exists("//data/scratch/r094879/data/data_check/cumulative_sum_roi"):
         os.makedirs("//data/scratch/r094879/data/data_check/cumulative_sum_roi")
@@ -106,7 +106,7 @@ def create_roi_hm(filename,landmarks,y_avg,save_dir="ROI LM Heatmaps",
     hm = heatmap[:,:,0] + heatmap[:,:,1]
     plt.imshow(hm, cmap='gray')
     plt.title("Cumulative Sum of All Slices")
-    plt.savefig("//data/scratch/r094879/data/data_check/cumulative_sum_roi",image_name+"_"+(vertebra+1)+".png")
+    plt.savefig("//data/scratch/r094879/data/data_check/cumulative_sum_roi",image_name+"_"+(vertebra)+".png")
     plt.close()
 
 

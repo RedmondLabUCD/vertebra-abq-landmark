@@ -28,7 +28,7 @@ def extract_ROI_from_lm(image_name,img,xy_pairs,image_size,dim=200,save_dir="/da
     tl[:,0] = range(1,14)
     
     # All points will have an ROI where they are at the centre
-    width = dim/2
+    width = int(dim/2)
     
     for i in range(13):
         if not math.isnan(lm[i,1]):
@@ -41,12 +41,12 @@ def extract_ROI_from_lm(image_name,img,xy_pairs,image_size,dim=200,save_dir="/da
                 lm[i,0] = width
 
             # Define and save cropped ROI
-            cropped_img_r = img[int(lm[i,1]-width):int(lm[i,1]+width),
-                                int(lm[i,0]-width):int(lm[i,0]+width)]
-            cv.imwrite(os.path.join(save_dir,image_name+"_"+str(i+1) +".png"),cropped_img_r)
+            cropped_img_r = img[int(lm[i,1])-width:int(lm[i,1])+width,
+                                int(lm[i,0])-width:int(lm[i,0])+width]
+            cv.imwrite(os.path.join(save_dir,image_name+"_"+str(i) +".png"),cropped_img_r)
 
             # Collect the top-left coordinate of the ROI 
-            tl[i] = [i+1,lm[i,0]-width,lm[i,1]-width]
+            tl[i] = [int(i),int(lm[i,0])-width,int(lm[i,1])-width]
 
     print(tl)
                 
