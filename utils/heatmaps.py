@@ -98,7 +98,7 @@ def create_roi_hm(filename,landmarks,y_avg,save_dir="ROI LM Heatmaps",
     hm = heatmap[:,:,0] + heatmap[:,:,1]
     plt.imshow(hm, cmap='gray')
     plt.title("Cumulative Sum of All Slices")
-    plt.savefig("//data/scratch/r094879/data/data_check/cumulative_sum_roi",image_name+"_"+(vertebra)+".png")
+    plt.savefig("//data/scratch/r094879/data/data_check/cumulative_sum_roi",filename+"_"+str(vertebra)+".png")
     plt.close()
 
 
