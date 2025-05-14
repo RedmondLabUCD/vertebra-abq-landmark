@@ -64,9 +64,14 @@ def create_roi_hm(filename,landmarks,y_avg,save_dir="ROI LM Heatmaps",
     rp = resize_lm(scale_points,[y_avg,y_avg],[256,256])
 
     endplate_top_x = [rp[11,0],rp[64,0],rp[65,0],rp[66,0],rp[67,0],rp[68,0],rp[69,0],rp[70,0],rp[71,0],rp[72,0],
-                     rp[73,0],rp[74,0],rp[75,0],rp[76,0],rp[77,0],rp[78,0],rp[0,0]]
+                     rp[73,0],rp[74,0],rp[75,0],rp[0,0]]
     endplate_top_y = [rp[11,1],rp[64,1],rp[65,1],rp[66,1],rp[67,1],rp[68,1],rp[69,1],rp[70,1],rp[71,1],rp[72,1],
-                     rp[73,1],rp[74,1],rp[75,1],rp[76,1],rp[77,1],rp[78,1],rp[0,1]]
+                     rp[73,1],rp[74,1],rp[75,1],rp[0,1]]
+
+    # endplate_top_x = [rp[11,0],rp[64,0],rp[65,0],rp[66,0],rp[67,0],rp[68,0],rp[69,0],rp[70,0],rp[71,0],rp[72,0],
+    #                  rp[73,0],rp[74,0],rp[75,0],rp[76,0],rp[77,0],rp[78,0],rp[0,0]]
+    # endplate_top_y = [rp[11,1],rp[64,1],rp[65,1],rp[66,1],rp[67,1],rp[68,1],rp[69,1],rp[70,1],rp[71,1],rp[72,1],
+    #                  rp[73,1],rp[74,1],rp[75,1],rp[76,1],rp[77,1],rp[78,1],rp[0,1]]
     endplate_top = np.array(list(zip(endplate_top_x,endplate_top_y)))
     
     endplate_bottom_x = [rp[3,0],rp[37,0],rp[38,0],rp[39,0],rp[40,0],rp[41,0],rp[42,0],rp[43,0],rp[44,0],rp[45,0],
