@@ -28,7 +28,7 @@ def extract_ROI_from_lm(image_name,img,xy_pairs,image_size,dim=200,save_dir="/da
     tl[:,0] = range(1,14)
     
     # All points will have an ROI where they are at the centre
-    width = int(dim/3)*2
+    width = int((dim*2)/3)
     
     for i in range(13):
         if not math.isnan(lm[i,1]):
@@ -36,19 +36,17 @@ def extract_ROI_from_lm(image_name,img,xy_pairs,image_size,dim=200,save_dir="/da
             if int(lm[i,1]) < width:
                 lm[i,1] = width
             if int(lm[i,1]) > image_size[1] - width:
-                lm[i,1] = image_size[1] - width
+                lm[i,1] = int(image_size[1]) - width
             if int(lm[i,0]) < width:
                 lm[i,0] = width
 
             # Define and save cropped ROI
-            cropped_img_r = img[int(lm[i,1])-width:int(lm[i,1])+width,
-                                int(lm[i,0])-width:int(lm[i,0])+width]
+            cropped_img_r = img[int(int(lm[i,1])-width):int(int(lm[i,1])+width),
+                                int(int(lm[i,0])-width):int(int(lm[i,0])+width)]
             cv.imwrite(os.path.join(save_dir,image_name+"_"+str(i) +".png"),cropped_img_r)
 
             # Collect the top-left coordinate of the ROI 
-            tl[i] = [int(i),int(lm[i,0])-width,int(lm[i,1])-width]
-
-    print(tl)
+            tl[i] = [int(i),int(int(lm[i,0])-width),int(int(lm[i,1])-width)]
                 
     pd.DataFrame(tl).to_csv(os.path.join(tl_dir,image_name+".csv"),index=False)
 

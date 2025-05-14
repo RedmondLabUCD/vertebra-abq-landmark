@@ -14,12 +14,10 @@ def resize_lm(points,old_dim,new_dim):
     landmarks = np.array(points)
 
     print(new_dim)
-    print(old_dim[0])
-    print(old_dim[1])
     print(old_dim)
     
-    landmarks[:,0] = landmarks[:,0] * new_dim/old_dim[0]
-    landmarks[:,1] = landmarks[:,1] * new_dim/old_dim[1]
+    landmarks[:,0] = landmarks[:,0] * new_dim[0]/old_dim[0]
+    landmarks[:,1] = landmarks[:,1] * new_dim[1]/old_dim[1]
     
     return landmarks 
 
