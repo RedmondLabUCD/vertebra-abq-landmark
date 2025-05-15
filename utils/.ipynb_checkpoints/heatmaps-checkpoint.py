@@ -63,23 +63,16 @@ def create_roi_hm(filename,landmarks,y_avg,save_dir="ROI LM Heatmaps",
     scale_points = resize_coords(lm,tl_dir,filename,vertebra)
     rp = resize_lm(scale_points,[y_avg,y_avg],[256,256])
 
-    endplate_top_x = [rp[11,0],rp[64,0],rp[65,0],rp[66,0],rp[67,0],rp[68,0],rp[69,0],rp[70,0],rp[71,0],rp[72,0],
-                     rp[73,0],rp[74,0],rp[75,0], rp[0,0]]
-    endplate_top_y = [rp[11,1],rp[64,1],rp[65,1],rp[66,1],rp[67,1],rp[68,1],rp[69,1],rp[70,1],rp[71,1],rp[72,1],
-                     rp[73,1],rp[74,1],rp[75,1],rp[0,1]]
-
-    # endplate_top_x = [rp[11,0],rp[64,0],rp[65,0],rp[66,0],rp[67,0],rp[68,0],rp[69,0],rp[70,0],rp[71,0],rp[72,0],
-    #                  rp[73,0],rp[74,0],rp[75,0],rp[76,0],rp[77,0],rp[78,0],rp[0,0]]
-    # endplate_top_y = [rp[11,1],rp[64,1],rp[65,1],rp[66,1],rp[67,1],rp[68,1],rp[69,1],rp[70,1],rp[71,1],rp[72,1],
-    #                  rp[73,1],rp[74,1],rp[75,1],rp[76,1],rp[77,1],rp[78,1],rp[0,1]]
+    endplate_top_x = [rp[11,0],rp[72,0],rp[73,0],rp[74,0],rp[75,0],rp[76,0],rp[77,0],rp[78,0],rp[79,0],rp[80,0],
+                     rp[81,0],rp[82,0],rp[83,0],rp[84,0],rp[85,0],rp[86,0],rp[0,0]]
+    endplate_top_y = [rp[11,1],rp[72,1],rp[73,1],rp[74,1],rp[75,1],rp[76,1],rp[77,1],rp[78,1],rp[79,1],rp[80,1],
+                     rp[81,1],rp[82,1],rp[83,1],rp[84,1],rp[85,1],rp[86,1],rp[0,1]]
     endplate_top = np.array(list(zip(endplate_top_x,endplate_top_y)))
     
-    endplate_bottom_x = [rp[3,0],rp[37,0],rp[38,0],rp[39,0],rp[40,0],rp[41,0],rp[42,0],rp[43,0],rp[44,0],rp[45,0],
+    endplate_bottom_x = [rp[3,0],rp[37,0],rp[38,0],rp[39,0],rp[40,0],rp[41,0],rp[42,0],rp[,rp[44,0],rp[45,0],
                      rp[46,0],rp[47,0],rp[48,0],rp[10,0]]
     endplate_bottom_y = [rp[3,1],rp[37,1],rp[38,1],rp[39,1],rp[40,1],rp[41,1],rp[42,1],rp[43,1],rp[44,1],rp[45,1],
                      rp[46,1],rp[47,1],rp[48,1],rp[10,1]]
-    print(endplate_top_x)
-    print(endplate_top_y)
     endplate_bottom = np.array(list(zip(endplate_bottom_x,endplate_bottom_y)))
     
     interp_points_top = interpolate_curve(endplate_top,num_points=500)
