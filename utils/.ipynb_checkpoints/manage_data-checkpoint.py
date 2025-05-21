@@ -700,6 +700,9 @@ def create_dataset():
 
         gather_boundaries(row,output_dir_3,output_dir_5,avg_y)  
 
+        if index == 20:
+            break
+
 
 def view_heatmaps():
     
