@@ -33,8 +33,8 @@ def extract_ROI_from_lm(image_name,img,xy_pairs,image_size,dim=200,save_dir="/da
             # Deal with exceptions where the point desired as the centre is too close to edge of image
             if int(lm[i,1]) < width:
                 lm[i,1] = width
-            if int(lm[i,1]) > image_size[1] - width:
-                lm[i,1] = int(image_size[1]) - width
+            if int(lm[i,1]) > image_size[0] - width:
+                lm[i,1] = int(image_size[0]) - width
             if int(lm[i,0]) < width:
                 lm[i,0] = width
 
