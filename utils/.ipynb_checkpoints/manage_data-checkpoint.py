@@ -17,7 +17,7 @@ import pyreadstat
 from pydicom import dcmread
 from utils.roi_functions import resize_roi_lm, extract_ROI_from_lm
 from utils.heatmaps import create_hm, create_roi_hm
-from utils.feature_extraction import extract_image_sizerm -r
+from utils.feature_extraction import extract_image_size
 import cv2 as cv
 from pydicom.pixel_data_handlers.util import apply_voi_lut
 import matplotlib.pyplot as plt
