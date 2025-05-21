@@ -17,7 +17,7 @@ import pyreadstat
 from pydicom import dcmread
 from utils.roi_functions import resize_roi_lm, extract_ROI_from_lm
 from utils.heatmaps import create_hm, create_roi_hm
-from utils.feature_extraction import extract_image_size
+from utils.feature_extraction import extract_image_sizerm -r
 import cv2 as cv
 from pydicom.pixel_data_handlers.util import apply_voi_lut
 import matplotlib.pyplot as plt
@@ -686,7 +686,9 @@ def create_dataset():
                 dists.append(dist)
 
         avg_y = np.mean(dists)
-        avg_y = avg_y*2
+        avg_y = avg_y*1.5
+        if avg_y < 256:
+            avg_y = 256
 
         # Combine x and y values and filter out NaN pairs
         xy_pairs = np.array(list(zip(x_values, y_values)))
