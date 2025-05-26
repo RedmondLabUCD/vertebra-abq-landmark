@@ -161,14 +161,14 @@ def test(model, loader, eval_metric, params, checkpoint=None, name=None, extra=N
     
     # csv_name = None
     # count = [0,0,0,0]
-    stats_df = pd.DataFrame(columns=['image','T4x','T4y','T4_val','T5x','T5y','T5_val','T6x','T6y','T6_val','T7x',
-                                     'T7y','T7_val','T8x','T8y','T8_val','T9x','T9y','T9_val','T10x','T10y','T10_val',
-                                     'T11x','T11y','T11_val','T12x','T12y','T12_val','L1x','L1y','L1_val',
-                                     'L2x','L2y','L2_val','L3x','L3y','L3_val','L4x','L4y','L4_val','RMSE','correct',
-                                     'total','id_acc'])
+    # stats_df = pd.DataFrame(columns=['image','T4x','T4y','T4_val','T5x','T5y','T5_val','T6x','T6y','T6_val','T7x',
+    #                                  'T7y','T7_val','T8x','T8y','T8_val','T9x','T9y','T9_val','T10x','T10y','T10_val',
+    #                                  'T11x','T11y','T11_val','T12x','T12y','T12_val','L1x','L1y','L1_val',
+    #                                  'L2x','L2y','L2_val','L3x','L3y','L3_val','L4x','L4y','L4_val','RMSE','correct',
+    #                                  'total','id_acc'])
 
-    stats_df['image'] = test_names
-    stats_df.to_csv(os.path.join('//data/scratch/r094879/data/stats',name+'.csv'),index=False)
+    # stats_df['image'] = test_names
+    # stats_df.to_csv(os.path.join('//data/scratch/r094879/data/stats',name+'.csv'),index=False)
     
     with torch.no_grad():
         for batch_idx, (inputs, targets, full_filenames) in enumerate(loader):
