@@ -15,7 +15,7 @@ from utils.process_predictions import pixel_to_mm
 import cv2 as cv
 import math
 from sklearn.metrics import mean_squared_error
-from utils.landmark_prep import prep_landmarks, prep_landmarks_no_femur
+from utils.landmark_prep import prep_landmarks
 import matplotlib.pyplot as plt
 
 
