@@ -149,32 +149,32 @@ class curve_compare_metric(nn.Module):
     # plt.savefig('//data/scratch/r094879/data/data_check/output_heatmap_curve/'+str(filename)+'.png')
 
 
-def extract_curve_from_heatmap(heatmap, threshold=0.5):
-    """
-    Extract curve by computing the center of mass for each column that has signal.
-    Returns list of (x, y) coordinates.
-    """
-    height, width = heatmap.shape
-    points = []
-
-    for col in range(width):
-        column = heatmap[:, col]
-        if column.max() > threshold:
-            # Create a binary image for center_of_mass
-            binary_column = column / column.sum() if column.sum() > 0 else column
-            y, x = center_of_mass(binary_column.reshape(-1, 1))  # reshaped for 2D
-            points.append((col, y))  # (x, y)
-
-    return np.array(points)
-
+    def extract_curve_from_heatmap(heatmap, threshold=0.5):
+        """
+        Extract curve by computing the center of mass for each column that has signal.
+        Returns list of (x, y) coordinates.
+        """
+        height, width = heatmap.shape
+        points = []
     
-def hausdorff_distance(A, B):
-    """
-    Symmetric Hausdorff distance between two point sets A and B.
-    """
-    d1 = directed_hausdorff(A, B)[0]
-    d2 = directed_hausdorff(B, A)[0]
-    return max(d1, d2)
+        for col in range(width):
+            column = heatmap[:, col]
+            if column.max() > threshold:
+                # Create a binary image for center_of_mass
+                binary_column = column / column.sum() if column.sum() > 0 else column
+                y, x = center_of_mass(binary_column.reshape(-1, 1))  # reshaped for 2D
+                points.append((col, y))  # (x, y)
+    
+        return np.array(points)
+    
+        
+    def hausdorff_distance(A, B):
+        """
+        Symmetric Hausdorff distance between two point sets A and B.
+        """
+        d1 = directed_hausdorff(A, B)[0]
+        d2 = directed_hausdorff(B, A)[0]
+        return max(d1, d2)
 
     
 class pb_mse_metric(nn.Module):
