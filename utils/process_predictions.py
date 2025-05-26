@@ -385,3 +385,31 @@ def final_lm_preds_postprocess(model_name="UNet_LM",dim=128,extra=" "):
 
         pb_create_hm(data_dir,filename,landmarks,image_size,save_dir="ROI LM Heatmaps AUG2",
                      tl_dir="ROI LM Top-Lefts AUG2",dim=128,size=5)
+
+
+def extract_curve_from_heatmap(heatmap, threshold=0.5):
+    """
+    Extract curve by computing the center of mass for each column that has signal.
+    Returns list of (x, y) coordinates.
+    """
+    height, width = heatmap.shape
+    points = []
+
+    for col in range(width):
+        column = heatmap[:, col]
+        if column.max() > threshold:
+            # Create a binary image for center_of_mass
+            binary_column = column / column.sum() if column.sum() > 0 else column
+            y, x = center_of_mass(binary_column.reshape(-1, 1))  # reshaped for 2D
+            points.append((col, y))  # (x, y)
+
+    return np.array(points)
+    
+        
+def hausdorff_distance(A, B):
+    """
+    Symmetric Hausdorff distance between two point sets A and B.
+    """
+    d1 = directed_hausdorff(A, B)[0]
+    d2 = directed_hausdorff(B, A)[0]
+    return max(d1, d2)
