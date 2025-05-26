@@ -12,6 +12,8 @@ from utils.landmark_prep import prep_landmarks, prep_landmarks_no_femur
 from utils.process_predictions import pixel_to_mm
 import matplotlib.pyplot as plt
 from pydicom import dcmread
+from scipy.ndimage import center_of_mass
+from scipy.spatial.distance import directed_hausdorff
     
 
 class mse_metric(nn.Module):
@@ -110,12 +112,79 @@ class pb_mse_metric_back(nn.Module):
         return mse
 
 
+class curve_compare_metric(nn.Module):
+    def __init__(self):
+        super(pb_mse_metric, self).__init__()
+    
+    def forward(self,target,prediction,filename,params):
+        prediction = prediction.cpu().detach().numpy()
+        ground_truth = target.cpu().detach().numpy()
+
+    # Extract curve from heatmap
+    pc_1 = extract_curve_from_heatmap(prediction[0,0,:,:])
+    pc_2 = extract_curve_from_heatmap(prediction[0,1,:,:])
+    gt_1 = extract_curve_from_heatmap(ground_truth[0,0,:,:])
+    gt_2 = extract_curve_from_heatmap(ground_truth[0,1,:,:])
+
+    # Compute Hausdorff distance
+    hd1 = hausdorff_distance(pc_1, gt_1)
+    hd2 = hausdorff_distance(pc_2, gt_2)
+    hd = (hd1+hd2)/2
+    print(f"Hausdorff Distance: {hd:.2f}")
+
+    # if not os.path.exists('//data/scratch/r094879/data/data_check/output_heatmap_curve/'):
+    #     os.makedirs('//data/scratch/r094879/data/data_check/output_heatmap_curve/')
+        
+    # # Visualization
+    # plt.imshow(heatmap, cmap='hot', origin='upper')
+    # if pc_1.size > 0:
+    #     plt.plot(pc_1[:, 0], pc_1[:, 1], 'b-', label='Predicted Curve')
+    # if pc_2.size > 0:
+    #     plt.plot(pc_2[:, 0], pc_2[:, 1], 'b-', label='Predicted Curve')
+    # plt.plot(gt_1[:, 0], gt_1[:, 1], 'g--', label='Ground Truth')
+    # plt.plot(gt_2[:, 0], gt_2[:, 1], 'g--', label='Ground Truth')
+    # plt.legend()
+    # plt.title(f"Hausdorff Distance: {hd:.2f}")
+    # plt.gca().invert_yaxis()
+    # plt.savefig('//data/scratch/r094879/data/data_check/output_heatmap_curve/'+str(filename)+'.png')
+
+
+def extract_curve_from_heatmap(heatmap, threshold=0.5):
+    """
+    Extract curve by computing the center of mass for each column that has signal.
+    Returns list of (x, y) coordinates.
+    """
+    height, width = heatmap.shape
+    points = []
+
+    for col in range(width):
+        column = heatmap[:, col]
+        if column.max() > threshold:
+            # Create a binary image for center_of_mass
+            binary_column = column / column.sum() if column.sum() > 0 else column
+            y, x = center_of_mass(binary_column.reshape(-1, 1))  # reshaped for 2D
+            points.append((col, y))  # (x, y)
+
+    return np.array(points)
+
+    
+def hausdorff_distance(A, B):
+    """
+    Symmetric Hausdorff distance between two point sets A and B.
+    """
+    d1 = directed_hausdorff(A, B)[0]
+    d2 = directed_hausdorff(B, A)[0]
+    return max(d1, d2)
+
+    
 class pb_mse_metric(nn.Module):
     def __init__(self):
         super(pb_mse_metric, self).__init__()
     
     def forward(self,target,prediction,filename,params):
         prediction = prediction.cpu().detach().numpy()
+
+        
         lm_pred = np.zeros((params.num_classes,2))
         root = '//data/scratch/r094879/data/'
 
