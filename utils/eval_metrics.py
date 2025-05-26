@@ -8,7 +8,7 @@ import torch
 import torch.nn as nn
 from sklearn.metrics import root_mean_squared_error, mean_squared_error
 from PIL import Image
-from utils.landmark_prep import prep_landmarks, prep_landmarks_no_femur
+from utils.landmark_prep import prep_landmarks
 from utils.process_predictions import pixel_to_mm
 import matplotlib.pyplot as plt
 from pydicom import dcmread
