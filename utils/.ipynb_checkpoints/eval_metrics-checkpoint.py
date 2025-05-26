@@ -114,7 +114,7 @@ class pb_mse_metric_back(nn.Module):
 
 class curve_compare_metric(nn.Module):
     def __init__(self):
-        super(pb_mse_metric, self).__init__()
+        super(curve_compare_metric, self).__init__()
     
     def forward(self,target,prediction,filename,params):
         prediction = prediction.cpu().detach().numpy()
