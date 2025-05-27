@@ -76,34 +76,31 @@ def main():
     # Get root for dataset
     root = '//data/scratch/r094879/data'
 
-    csv_file = os.path.join(root,'annotations/annotations.csv')
-    csv_df = pd.read_csv(csv_file)
-    csv_df = csv_df.sort_values(by=['id'], ascending=True).reset_index(drop=True)
-
     train = []
     val = []
     test = []
 
-    train_id = 0
-    val_id = 0
+    target_dir = os.path.join(root,params.target_dir)
+    file_list = list_files(target_dir,params.target_sfx) 
+    file_list = file_list.sort()
+    
+    for index, row in enumerate(file_list):
+        image_name = row.split('//')[-1]
 
-    for index, row in csv_df.iterrows():
-        image_name = row['image']
-
-        if index < int(0.8*len(csv_df)):
+        if index < int(0.8*len(file_list)):
             train.append(image_name)
-            train_id = row['id']
-        elif index < int(0.9*len(csv_df)):
-            if int(row['id']) == int(train_id):
+        elif index < int(0.9*len(file_list)):
+            if prev_image == image_name.split('_')[0]:
                 train.append(image_name)
             else:
                 val.append(image_name)
-                val_id = row['id']
-        elif index >= int(0.9*len(csv_df)):
-            if int(row['id']) == int(val_id):
+        elif index >= int(0.9*len(file_list)):
+            if prev_image == image_name.split('_')[0]:
                 val.append(image_name)
             else:
                 test.append(image_name)
+
+        prev_image = image_name.split('_')[0]
     
     Dataset = getattr(datasets,params.dataset_class)
     
