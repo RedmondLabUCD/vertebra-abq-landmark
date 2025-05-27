@@ -17,6 +17,7 @@ from scipy import ndimage
 from skimage import io
 from utils import datasets
 from utils.landmark_prep import prep_landmarks
+from torchvision.datasets.utils import list_files
 
 
 def mean_and_std(index, data_dir, params):
