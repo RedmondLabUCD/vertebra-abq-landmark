@@ -76,35 +76,52 @@ def main():
     # Get root for dataset
     root = '//data/scratch/r094879/data'
 
+    csv_file = os.path.join(root,'annotations/annotations.csv')
+    csv_df = pd.read_csv(csv_file)
+    csv_df = csv_df.sort_values(by=['id'], ascending=True).reset_index(drop=True)
+
+    train_over = []
+    val_over = []
+    test_over = []
+
+    train_id = 0
+    val_id = 0
+
+    for index, row in csv_df.iterrows():
+        image_name = row['image']
+
+        if index < int(0.8*len(csv_df)):
+            train_over.append(image_name)
+            train_id = row['id']
+        elif index < int(0.9*len(csv_df)):
+            if int(row['id']) == int(train_id):
+                train_over.append(image_name)
+            else:
+                val_over.append(image_name)
+                val_id = row['id']
+        elif index >= int(0.9*len(csv_df)):
+            if int(row['id']) == int(val_id):
+                val_over.append(image_name)
+            else:
+                test_over.append(image_name)
+
     train = []
     val = []
     test = []
 
-    target_dir = os.path.join(root,params.target_dir)
-    file_list = list_files(target_dir,params.target_sfx) 
-    file_list = file_list.sort()
-    print(file_list)
-    
-    index = 0
-    for row in file_list:
-        image_name = row.split('//')[-1]
+    all_files = os.listdir(os.path.join(root,params.target_dir),params.target_sfx)
 
-        if index < int(0.8*len(file_list)):
-            train.append(image_name)
-        elif index < int(0.9*len(file_list)):
-            if prev_image == image_name.split('_')[0]:
-                train.append(image_name)
-            else:
-                val.append(image_name)
-        elif index >= int(0.9*len(file_list)):
-            if prev_image == image_name.split('_')[0]:
-                val.append(image_name)
-            else:
-                test.append(image_name)
-
-        prev_image = image_name.split('_')[0]
-        index = index + 1
-    
+    for filename in all_files:
+        if any(keyword in filename for keyword in train_over):
+            filename = filename.split('//')[-1].split('.')[0]
+            train.append(filename)
+        if any(keyword in filename for keyword in val_over):
+            filename = filename.split('//')[-1].split('.')[0]
+            val.append(filename)
+        if any(keyword in filename for keyword in test_over):
+            filename = filename.split('//')[-1].split('.')[0]
+            test.append(filename)
+        
     Dataset = getattr(datasets,params.dataset_class)
     
     # Make directories to save results 
