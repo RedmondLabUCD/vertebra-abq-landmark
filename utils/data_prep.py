@@ -134,15 +134,15 @@ def final_mean_and_std(data_dir, params):
     for filename in all_files:
         if any(keyword in filename for keyword in train_over):
             filename = filename.split('//')[-1]
-            filename = filename.split('.')[0]
+            filename = filename[:-4]
             train.append(filename)
         if any(keyword in filename for keyword in val_over):
             filename = filename.split('//')[-1]
-            filename = filename.split('.')[0]
+            filename = filename[:-4]
             val.append(filename)
         if any(keyword in filename for keyword in test_over):
             filename = filename.split('//')[-1]
-            filename = filename.split('.')[0]
+            filename = filename[:-4]
             test.append(filename)
 
     print("EXTRACTED")
