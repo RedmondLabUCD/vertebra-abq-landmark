@@ -131,6 +131,7 @@ def final_mean_and_std(data_dir, params):
 
     all_files = list_files(os.path.join(data_dir,params.target_dir),params.target_sfx)
 
+    print(all_files)
     for filename in all_files:
         if any(keyword in filename for keyword in train_over):
             filename = filename.split('//')[-1]
