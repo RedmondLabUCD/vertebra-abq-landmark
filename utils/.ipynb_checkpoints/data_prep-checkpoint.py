@@ -93,7 +93,7 @@ def final_mean_and_std(data_dir, params):
     Dataset = getattr(datasets,"SpineDataset")
     
     # Define basic transform (resize and make tensor)
-    transform=transforms.Compose([transforms.Resize(256),
+    transform=transforms.Compose([transforms.Resize((256,256)),
                                   transforms.ToTensor()])
 
     out_transform=transforms.Compose([transforms.ToTensor()])
