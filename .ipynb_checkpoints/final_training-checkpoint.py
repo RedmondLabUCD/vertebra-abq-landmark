@@ -109,7 +109,7 @@ def main():
     val = []
     test = []
 
-    all_files = os.listdir(os.path.join(root,params.target_dir),params.target_sfx)
+    all_files = list_files(os.path.join(root,params.target_dir),params.target_sfx)
 
     for filename in all_files:
         if any(keyword in filename for keyword in train_over):
