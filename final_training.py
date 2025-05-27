@@ -141,7 +141,7 @@ def main():
     norm_mean,norm_std = final_mean_and_std(root,params)
 
     # Define transform for images
-    transform=transforms.Compose([transforms.Resize(256),
+    transform=transforms.Compose([transforms.Resize((256,256)),
                                   transforms.ToTensor(),
                                   transforms.Normalize(mean=norm_mean,std=norm_std)
                                   ])
