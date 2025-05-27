@@ -96,6 +96,8 @@ def final_mean_and_std(data_dir, params):
     transform=transforms.Compose([transforms.Resize(256),
                                   transforms.ToTensor()])
 
+    out_transform=transforms.Compose([transforms.ToTensor()])
+
     csv_file = os.path.join(data_dir,'annotations/annotations.csv')
     csv_df = pd.read_csv(csv_file)
 
@@ -147,7 +149,7 @@ def final_mean_and_std(data_dir, params):
 
     # Define and load training dataset
     train_data = Dataset(data_dir,train,params.image_dir,params.target_dir,target_sfx=params.target_sfx,
-                                input_tf=transform,output_tf=transform)
+                                input_tf=transform,output_tf=out_transform)
 
     loader = DataLoader(train_data,batch_size=params.batch_size,shuffle=False)
     
