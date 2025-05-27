@@ -127,6 +127,8 @@ def final_mean_and_std(data_dir, params):
     val = []
     test = []
 
+    print(test_over)
+
     all_files = list_files(os.path.join(data_dir,params.target_dir),params.target_sfx)
 
     for filename in all_files:
@@ -142,6 +144,9 @@ def final_mean_and_std(data_dir, params):
             filename = filename.split('//')[-1]
             filename = filename.split('.')[0]
             test.append(filename)
+
+    print("EXTRACTED")
+    print(test)
 
     # Define and load training dataset
     train_data = Dataset(data_dir,train,params.image_dir,params.target_dir,target_sfx=params.target_sfx,
