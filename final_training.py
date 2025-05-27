@@ -109,6 +109,8 @@ def main():
     val = []
     test = []
 
+    print(train_over)
+
     all_files = list_files(os.path.join(root,params.target_dir),params.target_sfx)
 
     for filename in all_files:
@@ -121,7 +123,8 @@ def main():
         if any(keyword in filename for keyword in test_over):
             filename = filename.split('//')[-1].split('.')[0]
             test.append(filename)
-        
+
+    print(train)
     Dataset = getattr(datasets,params.dataset_class)
     
     # Make directories to save results 
