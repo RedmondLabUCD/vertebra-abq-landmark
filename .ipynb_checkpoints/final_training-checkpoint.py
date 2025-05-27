@@ -109,8 +109,6 @@ def main():
     val = []
     test = []
 
-    print(train_over)
-
     all_files = list_files(os.path.join(root,params.target_dir),params.target_sfx)
 
     for filename in all_files:
@@ -127,7 +125,6 @@ def main():
             filename = filename[:-4]
             test.append(filename)
 
-    print(train)
     Dataset = getattr(datasets,params.dataset_class)
     
     # Make directories to save results 
@@ -144,7 +141,8 @@ def main():
     norm_mean,norm_std = final_mean_and_std(root,params)
 
     # Define transform for images
-    transform=transforms.Compose([transforms.ToTensor(),
+    transform=transforms.Compose([transforms.Resize(256),
+                                  transforms.ToTensor(),
                                   transforms.Normalize(mean=norm_mean,std=norm_std)
                                   ])
 

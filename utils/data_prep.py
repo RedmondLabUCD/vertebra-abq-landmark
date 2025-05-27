@@ -93,7 +93,8 @@ def final_mean_and_std(data_dir, params):
     Dataset = getattr(datasets,"SpineDataset")
     
     # Define basic transform (resize and make tensor)
-    transform = transforms.ToTensor()
+    transform=transforms.Compose([transforms.Resize(256),
+                                  transforms.ToTensor()])
 
     csv_file = os.path.join(data_dir,'annotations/annotations.csv')
     csv_df = pd.read_csv(csv_file)
@@ -127,8 +128,6 @@ def final_mean_and_std(data_dir, params):
     val = []
     test = []
 
-    print(test_over)
-
     all_files = list_files(os.path.join(data_dir,params.target_dir),params.target_sfx)
 
     print(all_files)
@@ -137,17 +136,14 @@ def final_mean_and_std(data_dir, params):
             filename = filename.split('//')[-1]
             filename = filename[:-4]
             train.append(filename)
-        if any(keyword in filename for keyword in val_over):
+        elif any(keyword in filename for keyword in val_over):
             filename = filename.split('//')[-1]
             filename = filename[:-4]
             val.append(filename)
-        if any(keyword in filename for keyword in test_over):
+        elif any(keyword in filename for keyword in test_over):
             filename = filename.split('//')[-1]
             filename = filename[:-4]
             test.append(filename)
-
-    print("EXTRACTED")
-    print(test)
 
     # Define and load training dataset
     train_data = Dataset(data_dir,train,params.image_dir,params.target_dir,target_sfx=params.target_sfx,
