@@ -85,7 +85,8 @@ def main():
     file_list = file_list.sort()
     print(file_list)
     
-    for index, row in enumerate(file_list):
+    index = 0
+    for row in file_list:
         image_name = row.split('//')[-1]
 
         if index < int(0.8*len(file_list)):
@@ -102,6 +103,7 @@ def main():
                 test.append(image_name)
 
         prev_image = image_name.split('_')[0]
+        index = index + 1
     
     Dataset = getattr(datasets,params.dataset_class)
     
