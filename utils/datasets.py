@@ -27,7 +27,6 @@ class SpineDataset(Dataset):
             
     def __getitem__(self, index): #getitem method
         filename = self.file_list[index]
-        print(filename)
         input_filename = os.path.join(self.input_dir, filename+'.png')
         output_filename = os.path.join(self.output_dir, filename+'.npy')
 
