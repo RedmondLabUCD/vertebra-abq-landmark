@@ -97,9 +97,9 @@ def final_mean_and_std(data_dir, params):
     csv_file = os.path.join(data_dir,'annotations/annotations.csv')
     csv_df = pd.read_csv(csv_file)
 
-    train = []
-    val = []
-    test = []
+    train_over = []
+    val_over = []
+    test_over = []
 
     train_id = 0
     val_id = 0
@@ -108,19 +108,36 @@ def final_mean_and_std(data_dir, params):
         image_name = row['image']
 
         if index < int(0.8*len(csv_df)):
-            train.append(image_name)
+            train_over.append(image_name)
             train_id = row['id']
         elif index < int(0.9*len(csv_df)):
             if int(row['id']) == int(train_id):
-                train.append(image_name)
+                train_over.append(image_name)
             else:
-                val.append(image_name)
+                val_over.append(image_name)
                 val_id = row['id']
         elif index >= int(0.9*len(csv_df)):
             if int(row['id']) == int(val_id):
-                val.append(image_name)
+                val_over.append(image_name)
             else:
-                test.append(image_name)
+                test_over.append(image_name)
+
+    train = []
+    val = []
+    test = []
+
+    all_files = list_files(os.path.join(data_dir,params.target_dir),params.target_sfx)
+
+    for filename in all_files:
+        if any(keyword in filename for keyword in train_over):
+            filename = filename.split('//')[-1].split('.')[0]
+            train.append(filename)
+        if any(keyword in filename for keyword in val_over):
+            filename = filename.split('//')[-1].split('.')[0]
+            val.append(filename)
+        if any(keyword in filename for keyword in test_over):
+            filename = filename.split('//')[-1].split('.')[0]
+            test.append(filename)
 
     # Define and load training dataset
     train_data = Dataset(data_dir,train,params.image_dir,params.target_dir,target_sfx=params.target_sfx,
