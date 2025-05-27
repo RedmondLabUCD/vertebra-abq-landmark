@@ -83,6 +83,7 @@ def main():
     target_dir = os.path.join(root,params.target_dir)
     file_list = list_files(target_dir,params.target_sfx) 
     file_list = file_list.sort()
+    print(file_list)
     
     for index, row in enumerate(file_list):
         image_name = row.split('//')[-1]
