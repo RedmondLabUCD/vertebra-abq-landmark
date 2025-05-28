@@ -28,6 +28,7 @@ from utils.landmark_prep import prep_landmarks
 from utils.feature_extraction import get_contours, femhead_centre
 from utils.roi_functions import resize_roi, reverse_resize_roi_lm, extract_ROI_from_lm
 from scipy.spatial.distance import directed_hausdorff
+from scipy.ndimage import center_of_mass
     
 
 def superimpose(filename,superimposed_dir,index,extra="",extra2="",extra3="",extra4="",model="UNet_FemHead",
