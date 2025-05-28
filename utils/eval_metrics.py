@@ -125,7 +125,12 @@ class curve_compare_metric(nn.Module):
         pc_2 = extract_curve_from_heatmap(prediction[0,1,:,:])
         gt_1 = extract_curve_from_heatmap(ground_truth[0,0,:,:])
         gt_2 = extract_curve_from_heatmap(ground_truth[0,1,:,:])
-    
+
+        print("line points")
+        print(pc_1)
+        print(gt_1)
+        print(pc_2)
+        print(gt_2)
         # Compute Hausdorff distance
         hd1 = hausdorff_distance(pc_1, gt_1)
         hd2 = hausdorff_distance(pc_2, gt_2)
