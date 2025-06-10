@@ -93,13 +93,13 @@ def main():
         if index < int(0.05*len(csv_df)):
             train_over.append(image_name)
             train_id = row['id']
-        elif index < int(0.1*len(csv_df)):
+        elif index < int(0.75*len(csv_df)):
             if int(row['id']) == int(train_id):
                 train_over.append(image_name)
             else:
                 val_over.append(image_name)
                 val_id = row['id']
-        elif index >= int(0.95*len(csv_df)):
+        elif index >= int(0.99*len(csv_df)):
             if int(row['id']) == int(val_id):
                 val_over.append(image_name)
             else:

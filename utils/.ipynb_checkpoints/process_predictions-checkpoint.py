@@ -399,6 +399,7 @@ def extract_curve_from_heatmap(heatmap, threshold=0.5):
 
     for col in range(width):
         column = heatmap[:, col]
+        print(column)
         if column.max() > threshold:
             # Create a binary image for center_of_mass
             # binary_column = column / column.sum() if column.sum() > 0 else column
