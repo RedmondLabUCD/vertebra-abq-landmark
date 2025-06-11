@@ -81,11 +81,11 @@ def create_roi_hm(filename,landmarks,y_avg,save_dir="ROI LM Heatmaps",
     heatmap = np.zeros([256,256,2], dtype=np.float32)
     for x, y in interp_points_top.astype(int):
         if 0 <= x < 256 and 0 <= y < 256:
-            heatmap[y, x, 0] = 1.0
+            heatmap[y, x, 0] = 255
 
     for x, y in interp_points_bottom.astype(int):
         if 0 <= x < 256 and 0 <= y < 256:
-            heatmap[y, x, 1] = 1.0
+            heatmap[y, x, 1] = 255
     
     # Optional: Apply Gaussian blur to create smooth heatmap
     heatmap = gaussian_filter(heatmap, sigma=2)
