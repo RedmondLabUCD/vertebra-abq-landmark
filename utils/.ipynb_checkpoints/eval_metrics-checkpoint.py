@@ -120,9 +120,7 @@ class curve_compare_metric(nn.Module):
         prediction = prediction.cpu().detach().numpy()
         ground_truth = target.cpu().detach().numpy()
 
-        print(prediction)
-        print('groundtruth')
-        print(ground_truth)
+        print(filename)
 
         # Extract curve from heatmap
         pc_1 = extract_curve_from_heatmap(prediction[0,0,:,:])
