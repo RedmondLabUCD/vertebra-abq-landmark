@@ -81,14 +81,11 @@ def create_roi_hm(filename,landmarks,y_avg,save_dir="ROI LM Heatmaps",
     heatmap = np.zeros([256,256,2], dtype=np.float32)
     for x, y in interp_points_top.astype(int):
         if 0 <= x < 256 and 0 <= y < 256:
-            heatmap[y, x, 0] = 255
+            heatmap[:,x,0] = gaussian_k(y,5,256)
 
     for x, y in interp_points_bottom.astype(int):
         if 0 <= x < 256 and 0 <= y < 256:
-            heatmap[y, x, 1] = 255
-    
-    # Optional: Apply Gaussian blur to create smooth heatmap
-    heatmap = gaussian_filter(heatmap, sigma=2)
+            heatmap[:,x,1] = gaussian_k(y,5,256)
 
     np.save(os.path.join(save_dir,filename+"_"+str(vertebra) +".npy"),heatmap)
 
@@ -102,10 +99,15 @@ def create_roi_hm(filename,landmarks,y_avg,save_dir="ROI LM Heatmaps",
     plt.close()
 
 
-def gaussian_k(x0,y0,sigma,height,width):
+def gaussian_k(x0,sigma,height):
         x = np.arange(0,height,1,float) ## (width,)
-        y = np.arange(0,width,1,float)[:,np.newaxis] ## (height,1)
-        return np.exp(-((x-x0)**2 + (y-y0)**2)/(2*sigma**2))
+        return np.exp(-0.5*(((x-x0)/sigma)**2))
+
+
+# def gaussian_k(x0,y0,sigma,height,width):
+#         x = np.arange(0,height,1,float) ## (width,)
+#         y = np.arange(0,width,1,float)[:,np.newaxis] ## (height,1)
+#         return np.exp(-((x-x0)**2 + (y-y0)**2)/(2*sigma**2))
 
 
 def generate_hm(landmarks,dim,s=3):
