@@ -137,13 +137,18 @@ def main():
     pred_acc_scores = []
     best_epochs = []
         
-    # Calculate mean and std for dataset normalization 
-    norm_mean,norm_std = final_mean_and_std(root,params)
+    # # Calculate mean and std for dataset normalization 
+    # norm_mean,norm_std = final_mean_and_std(root,params)
+
+    # # Define transform for images
+    # transform=transforms.Compose([transforms.Resize((256,256)),
+    #                               transforms.ToTensor(),
+    #                               transforms.Normalize(mean=norm_mean,std=norm_std)
+    #                               ])
 
     # Define transform for images
     transform=transforms.Compose([transforms.Resize((256,256)),
-                                  transforms.ToTensor(),
-                                  transforms.Normalize(mean=norm_mean,std=norm_std)
+                                  transforms.ToTensor()
                                   ])
 
     # Set up transforms for targets
