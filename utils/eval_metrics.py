@@ -119,22 +119,12 @@ class curve_compare_metric(nn.Module):
     def forward(self,target,prediction,filename,params):
         prediction = prediction.cpu().detach().numpy()
         ground_truth = target.cpu().detach().numpy()
-
-        print(filename)
-        print(ground_truth.shape)
-        print(prediction.shape)
-
         # Extract curve from heatmap
         pc_1 = extract_curve_from_heatmap(prediction[0,0,:,:])
         pc_2 = extract_curve_from_heatmap(prediction[0,1,:,:])
         gt_1 = extract_curve_from_heatmap(ground_truth[0,0,:,:])
         gt_2 = extract_curve_from_heatmap(ground_truth[0,1,:,:])
 
-        print("line points")
-        print(pc_1.shape)
-        print(gt_1.shape)
-        print(pc_2.shape)
-        print(gt_2.shape)
         # Compute Hausdorff distance
         hd1 = hausdorff_distance(pc_1, gt_1)
         hd2 = hausdorff_distance(pc_2, gt_2)
