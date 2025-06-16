@@ -147,6 +147,8 @@ class curve_compare_metric(nn.Module):
         # plt.gca().invert_yaxis()
         # plt.savefig('//data/scratch/r094879/data/data_check/output_heatmap_curve/'+str(filename)+'.png')
 
+        return hd
+
     
 class pb_mse_metric(nn.Module):
     def __init__(self):

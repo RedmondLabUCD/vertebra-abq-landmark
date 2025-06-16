@@ -143,7 +143,6 @@ def val(model, loader, criterion, eval_metric, params, checkpoint=None):
             filename = filenames.split("\\")[-1]
             metric_avg = eval_metric(targets,predictions,filename,params)
             metrics.append(metric_avg)
-    print(metrics)
     acc = sum(metrics)/len(metrics)
     return valid_loss.value, acc
 
