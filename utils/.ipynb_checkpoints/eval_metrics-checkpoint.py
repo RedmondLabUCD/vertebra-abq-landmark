@@ -125,13 +125,19 @@ class curve_compare_metric(nn.Module):
         gt_1 = extract_curve_from_heatmap(ground_truth[0,0,:,:])
         gt_2 = extract_curve_from_heatmap(ground_truth[0,1,:,:])
 
-        print(gt_1.shape)
-        print(gt_2.shape)
-        print(filename)
+        if pc_1.shape[0] == 0:
+            hd1 = 256.0
+            print(filename)
+        else: 
+            hd1 = hausdorff_distance(pc_1, gt_1)
+            
+        if pc_2.shape[0] == 0:
+            hd2 = 256.0  
+            print(filename)
+        else:
+            hd2 = hausdorff_distance(pc_2, gt_2)
         
         # Compute Hausdorff distance
-        hd1 = hausdorff_distance(pc_1, gt_1)
-        hd2 = hausdorff_distance(pc_2, gt_2)
         hd = (hd1+hd2)/2
         print(f"Hausdorff Distance: {hd:.2f}")
     
