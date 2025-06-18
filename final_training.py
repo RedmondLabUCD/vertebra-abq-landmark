@@ -90,16 +90,16 @@ def main():
     for index, row in csv_df.iterrows():
         image_name = row['image']
 
-        if index < int(0.05*len(csv_df)):
+        if index < int(0.8*len(csv_df)):
             train_over.append(image_name)
             train_id = row['id']
-        elif index < int(0.75*len(csv_df)):
+        elif index < int(0.9*len(csv_df)):
             if int(row['id']) == int(train_id):
                 train_over.append(image_name)
             else:
                 val_over.append(image_name)
                 val_id = row['id']
-        elif index >= int(0.99*len(csv_df)):
+        elif index >= int(0.9*len(csv_df)):
             if int(row['id']) == int(val_id):
                 val_over.append(image_name)
             else:
@@ -137,19 +137,19 @@ def main():
     pred_acc_scores = []
     best_epochs = []
         
-    # # Calculate mean and std for dataset normalization 
-    # norm_mean,norm_std = final_mean_and_std(root,params)
-
-    # # Define transform for images
-    # transform=transforms.Compose([transforms.Resize((256,256)),
-    #                               transforms.ToTensor(),
-    #                               transforms.Normalize(mean=norm_mean,std=norm_std)
-    #                               ])
+    # Calculate mean and std for dataset normalization 
+    norm_mean,norm_std = final_mean_and_std(root,params)
 
     # Define transform for images
     transform=transforms.Compose([transforms.Resize((256,256)),
-                                  transforms.ToTensor()
+                                  transforms.ToTensor(),
+                                  transforms.Normalize(mean=norm_mean,std=norm_std)
                                   ])
+
+    # # Define transform for images
+    # transform=transforms.Compose([transforms.Resize((256,256)),
+    #                               transforms.ToTensor()
+    #                               ])
 
     # Set up transforms for targets
     target_transform = transforms.ToTensor()
