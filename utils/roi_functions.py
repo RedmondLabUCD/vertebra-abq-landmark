@@ -44,7 +44,7 @@ def extract_ROI_from_lm(image_name,img,xy_pairs,image_size,dim=200,save_dir="/da
             # cv.imwrite(os.path.join(save_dir,image_name+"_"+str(i) +".png"),cropped_img_r)
 
             # img = cv.imread(os.path.join(save_dir,image_name+"_"+str(i) +".png"), 0)
-            clahe = cv.createCLAHE(clipLimit=4.0, tileGridSize=(4,4))
+            clahe = cv.createCLAHE(clipLimit=3.0, tileGridSize=(4,4))
             img_clahe = clahe.apply(cropped_img_r)
             cv.imwrite(os.path.join(save_dir,image_name+"_"+str(i) +".png"),img_clahe)
     
