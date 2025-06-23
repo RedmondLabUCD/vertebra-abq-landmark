@@ -127,19 +127,16 @@ class curve_compare_metric(nn.Module):
 
         if pc_1.shape[0] == 0:
             hd1 = 256.0
-            print(filename)
         else: 
             hd1 = hausdorff_distance(pc_1, gt_1)
             
         if pc_2.shape[0] == 0:
             hd2 = 256.0  
-            print(filename)
         else:
             hd2 = hausdorff_distance(pc_2, gt_2)
         
         # Compute Hausdorff distance
         hd = (hd1+hd2)/2
-        print(f"Hausdorff Distance: {hd:.2f}")
     
         # if not os.path.exists('//data/scratch/r094879/data/data_check/output_heatmap_curve/'):
         #     os.makedirs('//data/scratch/r094879/data/data_check/output_heatmap_curve/')

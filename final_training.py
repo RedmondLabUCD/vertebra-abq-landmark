@@ -90,16 +90,16 @@ def main():
     for index, row in csv_df.iterrows():
         image_name = row['image']
 
-        if index < int(0.8*len(csv_df)):
+        if index < int(0.05*len(csv_df)):
             train_over.append(image_name)
             train_id = row['id']
-        elif index < int(0.9*len(csv_df)):
+        elif index < int(0.07*len(csv_df)):
             if int(row['id']) == int(train_id):
                 train_over.append(image_name)
             else:
                 val_over.append(image_name)
                 val_id = row['id']
-        elif index >= int(0.9*len(csv_df)):
+        elif index >= int(0.97*len(csv_df)):
             if int(row['id']) == int(val_id):
                 val_over.append(image_name)
             else:
@@ -184,7 +184,7 @@ def main():
     train_accs = []
 
     # Initialize early stopping
-    early_stopping = EarlyStopping(verbose=True, patience=20, up=params.early_stopping_up, path=os.path.join(root,params.checkpoint_dir))
+    early_stopping = EarlyStopping(verbose=True, patience=5, up=params.early_stopping_up, path=os.path.join(root,params.checkpoint_dir))
 
     # ==================== TRAIN THE MODEL FOR ONE FOLD ====================
 
