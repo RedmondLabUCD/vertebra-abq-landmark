@@ -196,12 +196,11 @@ def test(model, loader, eval_metric, params, checkpoint=None, name=None, extra=N
     return acc
 
 
-def final_test(model, device, loader, eval_metric, params, checkpoint=None, name=None, extra=None,
+def final_test(model, loader, eval_metric, params, checkpoint=None, name=None, extra=None,
          prediction_dir=None, AUG=False):
     if checkpoint is not None:
         model_state = torch.load(checkpoint)
         model.load_state_dict(model_state['model']) 
-        model.to(device)
         
     model.eval()
     metrics = []
@@ -210,7 +209,6 @@ def final_test(model, device, loader, eval_metric, params, checkpoint=None, name
     data_dir = os.path.join(root,"Results","Statistics") 
     
     csv_name = None
-    count = [0,0,0,0]
     
     with torch.no_grad():
         for batch_idx, (inputs, full_filenames) in enumerate(loader):
@@ -218,15 +216,15 @@ def final_test(model, device, loader, eval_metric, params, checkpoint=None, name
             predictions = model(inputs)
             filenames = full_filenames[0][:-4]
             filename = filenames.split("\\")[-1]
-            metric_avg = eval_metric(predictions,filename,params,AUG,prediction_dir,square=False)
+            metric_avg = eval_metric(predictions,filename,params,name)
             metrics.append(metric_avg)
-            if prediction_dir is not None:
-                if "ROI_LM" in str(name):
-                    csv_name = final_roi_lm_post_process(name,extra,root,data_dir,params,prediction_dir,
-                                                   predictions,filename,metric_avg,csv_name)
-                elif "LM" in str(name):
-                    count = final_lm_post_process(name,extra,root,data_dir,params,prediction_dir,
-                                            predictions,filename,metric_avg,count=count)
+            # if prediction_dir is not None:
+            #     if "ROI_LM" in str(name):
+            #         csv_name = final_roi_lm_post_process(name,extra,root,data_dir,params,prediction_dir,
+            #                                        predictions,filename,metric_avg,csv_name)
+            #     elif "LM" in str(name):
+            #         count = final_lm_post_process(name,extra,root,data_dir,params,prediction_dir,
+            #                                 predictions,filename,metric_avg,count=count)
 
     acc = sum(metrics)/len(metrics)        
     return acc

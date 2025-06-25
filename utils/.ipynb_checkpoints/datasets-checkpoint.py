@@ -64,19 +64,18 @@ class SpineDataset(Dataset):
     
     
 class HipSegDatasetTEST(Dataset):
-    def __init__(self,data_dir,image_dir,
+    def __init__(self,root,filenames,image_dir,
                  input_tf=None,
                  loader=pil_loader):
         self.root = data_dir
         self.input_tf = input_tf
         self.loader = loader
         self.input_dir = os.path.join(self.root,image_dir) #set image directory
-        self.file_list = list_files(self.input_dir,".png",prefix=False) 
-        self.file_list.sort() #sorts images in descending order
+        self.file_list = filenames
             
     def __getitem__(self, index): #getitem method
         filename = self.file_list[index]
-        input_filename = os.path.join(self.input_dir,filename)
+        input_filename = os.path.join(self.input_dir, filename+'.png')
         # Load target and image
         input = self.loader(input_filename) # converts to PIL image RGB
         # Apply transforms if given

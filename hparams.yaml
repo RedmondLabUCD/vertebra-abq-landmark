@@ -13,7 +13,7 @@ UNet_ABQ_LM:
   dataset_class: "SpineDataset"
   loss: "custom_weighted_loss"
   eval_metric: "curve_compare_metric"
-  test_eval_metric: "pb_mse_metric_test"
+  test_eval_metric: "curve_compare_metric_test"
   num_classes: 2
   batch_size: 32
   input_size: 256

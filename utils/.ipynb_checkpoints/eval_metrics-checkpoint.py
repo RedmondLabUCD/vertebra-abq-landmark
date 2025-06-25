@@ -14,6 +14,7 @@ import matplotlib.pyplot as plt
 from pydicom import dcmread
 from scipy.ndimage import center_of_mass
 from scipy.spatial.distance import directed_hausdorff
+import cv2 as cv
     
 
 class mse_metric(nn.Module):
@@ -153,6 +154,63 @@ class curve_compare_metric(nn.Module):
         # plt.title(f"Hausdorff Distance: {hd:.2f}")
         # plt.gca().invert_yaxis()
         # plt.savefig('//data/scratch/r094879/data/data_check/output_heatmap_curve/'+str(filename)+'.png')
+
+        return hd
+
+
+class curve_compare_metric_test(nn.Module):
+    def __init__(self):
+        super(curve_compare_metric_test, self).__init__()
+    
+    def forward(self,prediction,filename,params,model_name):
+        prediction = prediction.cpu().detach().numpy()
+        
+        # Extract curve from heatmap
+        pc_1 = extract_curve_from_heatmap(prediction[0,0,:,:])
+        pc_2 = extract_curve_from_heatmap(prediction[0,1,:,:])
+
+        root = '//data/scratch/r094879/data/'
+        ground_truth = np.load(os.path.join(self.root,params.target_dir,filename+'.npy')) 
+        gt_1 = extract_curve_from_heatmap(ground_truth[0,0,:,:])
+        gt_2 = extract_curve_from_heatmap(ground_truth[0,1,:,:])
+
+        if pc_1.shape[0] == 0:
+            hd1 = 256.0
+        else: 
+            hd1 = hausdorff_distance(pc_1, gt_1)
+            
+        if pc_2.shape[0] == 0:
+            hd2 = 256.0  
+        else:
+            hd2 = hausdorff_distance(pc_2, gt_2)
+        
+        # Compute Hausdorff distance
+        hd = (hd1+hd2)/2
+
+        heatmap_dir = os.path.join('//data/scratch/r094879/data/Results',model_name,'predictions')
+        
+        if not os.path.exists(heatmap_dir):
+            os.makedirs(heatmap_dir)
+
+        cv.imwrite(os.path.join(heatmap_dir,filename + '_top.png'), prediction[0,0,:,:])
+        cv.imwrite(os.path.join(heatmap_dir,filename + '_bottom.png'), prediction[0,1,:,:])
+    
+        if not os.path.exists(os.path.join('//data/scratch/r094879/data/Results',model_name,'output_heatmap_curve')):
+            os.makedirs(os.path.join('//data/scratch/r094879/data/Results',model_name,'output_heatmap_curve'))
+
+        image = os.path.join(self.root,params.image_dir,filename+'.png')
+        # Visualization
+        plt.imshow(image, cmap='hot', origin='upper')
+        if pc_1.size > 0:
+            plt.plot(pc_1[:, 0], pc_1[:, 1], 'b-', label='Predicted Curve')
+        if pc_2.size > 0:
+            plt.plot(pc_2[:, 0], pc_2[:, 1], 'b-', label='Predicted Curve')
+        plt.plot(gt_1[:, 0], gt_1[:, 1], 'g--', label='Ground Truth')
+        plt.plot(gt_2[:, 0], gt_2[:, 1], 'g--', label='Ground Truth')
+        plt.legend()
+        plt.title(f"Hausdorff Distance: {hd:.2f}")
+        plt.gca().invert_yaxis()
+        plt.savefig('//data/scratch/r094879/data/data_check/output_heatmap_curve/'+str(filename)+'.png')
 
         return hd
 

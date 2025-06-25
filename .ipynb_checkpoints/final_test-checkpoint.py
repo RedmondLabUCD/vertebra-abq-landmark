@@ -46,9 +46,9 @@ def main():
     # Parse our YAML file which has our model parameters. 
     params = Params("hparams.yaml", args.model_name)
    
-    # Use GPU if available
-    use_gpu= torch.cuda.is_available()
-    device = torch.device("cuda" if use_gpu else "cpu")
+    # # Use GPU if available
+    # use_gpu= torch.cuda.is_available()
+    # device = torch.device("cuda" if use_gpu else "cpu")
     
     # Load model that has been chosen via the command line arguments. 
     model_module = __import__('.'.join(['models', params.model_name]), fromlist=['object'])
@@ -57,10 +57,57 @@ def main():
     eval_metric = getattr(e_metric, "test_" + params.eval_metric)
     metrics = eval_metric()
     
-    # Get root for dataset
-    root = os.path.abspath(os.path.join(os.getcwd(), os.pardir))
-    data_dir = os.path.join(root,"Dataset")
-    data_dir_test = os.path.join(root,"Dataset","FINAL TEST")
+     # Get root for dataset
+    root = '//data/scratch/r094879/data'
+
+    csv_file = os.path.join(root,'annotations/annotations.csv')
+    csv_df = pd.read_csv(csv_file)
+    csv_df = csv_df.sort_values(by=['id'], ascending=True).reset_index(drop=True)
+
+    train_over = []
+    val_over = []
+    test_over = []
+
+    train_id = 0
+    val_id = 0
+
+    for index, row in csv_df.iterrows():
+        image_name = row['image']
+
+        if index < int(0.10*len(csv_df)):
+            train_over.append(image_name)
+            train_id = row['id']
+        elif index < int(0.20*len(csv_df)):
+            if int(row['id']) == int(train_id):
+                train_over.append(image_name)
+            else:
+                val_over.append(image_name)
+                val_id = row['id']
+        elif index >= int(0.90*len(csv_df)):
+            if int(row['id']) == int(val_id):
+                val_over.append(image_name)
+            else:
+                test_over.append(image_name)
+
+    train = []
+    val = []
+    test = []
+
+    all_files = list_files(os.path.join(root,params.target_dir),params.target_sfx)
+
+    for filename in all_files:
+        if any(keyword in filename for keyword in train_over):
+            filename = filename.split('//')[-1]
+            filename = filename[:-4]
+            train.append(filename)
+        if any(keyword in filename for keyword in val_over):
+            filename = filename.split('//')[-1]
+            filename = filename[:-4]
+            val.append(filename)
+        if any(keyword in filename for keyword in test_over):
+            filename = filename.split('//')[-1]
+            filename = filename[:-4]
+            test.append(filename)
         
     Dataset = getattr(datasets,"HipSegDatasetTEST")
     
@@ -70,65 +117,53 @@ def main():
     if args.clahe:
         params.image_dir = params.image_dir + " CLAHE"
         extra = extra + "_clahe"
-        
-    if args.baseAUG:
-        extra2 = extra + "_baseAUG"
-        
-    if args.alt_loss:
-        extra2 = extra + "_MSE"
-        
-    if args.attn:
-        extra2 = extra + "_Attn"
                         
     if args.cl:
         extra2 = extra2 + "_CL"
-        
-    if args.AUG:
-        extra = extra + '_AUG'
-        extra2 = extra + '_AUG'
-        
-    if args.AUG2:
-        extra = extra + '_AUG2'
-        extra2 = extra2 + '_AUG2'
     
     # Make directories to save results 
     prediction_save = os.path.join(root,"Results",args.model_name,
                                    "Predicted" + extra + " " + params.target_dir)
     if not os.path.exists(prediction_save): os.makedirs(prediction_save)
     
-    if args.roi:
-        prediction_roi = os.path.join(root,"Results",args.model_name,
-                                       "Predicted" + extra2 + " Pred " + params.target_dir)
-        if not os.path.exists(prediction_roi): os.makedirs(prediction_roi)
-        params_roi = Params("hparams.yaml", args.model_name)
-        insize = ""
-        if args.attn:
-            insize = insize + "_Attn"
-        if args.cl:
-            insize = insize + "_CL"
-        if args.baseAUG:
-            insize = insize + "_AUG"
+    # if args.roi:
+    #     prediction_roi = os.path.join(root,"Results",args.model_name,
+    #                                    "Predicted" + extra2 + " Pred " + params.target_dir)
+    #     if not os.path.exists(prediction_roi): os.makedirs(prediction_roi)
+    #     params_roi = Params("hparams.yaml", args.model_name)
+    #     insize = ""
+    #     if args.attn:
+    #         insize = insize + "_Attn"
+    #     if args.cl:
+    #         insize = insize + "_CL"
+    #     if args.baseAUG:
+    #         insize = insize + "_AUG"
             
-        params_roi.image_dir = "Predicted" + insize + " " + params.image_dir 
-        params_roi.target_dir = "Predicted" + insize + " " + params.target_dir
+    #     params_roi.image_dir = "Predicted" + insize + " " + params.image_dir 
+    #     params_roi.target_dir = "Predicted" + insize + " " + params.target_dir
     
-    if args.AUG2:
-        params.target_dir = params.target_dir + " AUG2"
-        params.image_dir = params.image_dir + " AUG2"
+    # if args.AUG2:
+    #     params.target_dir = params.target_dir + " AUG2"
+    #     params.image_dir = params.image_dir + " AUG2"
     
     # ==================== EVALUATE MODEL FOR EACH FOLD ====================
         
+     # Empty to hold the results of each fold
+    acc_scores = []
+    pred_acc_scores = []
+    best_epochs = []
+        
     # Calculate mean and std for dataset normalization 
-    norm_mean,norm_std = final_mean_and_std(data_dir,params,args.AUG)
+    norm_mean,norm_std = final_mean_and_std(root,params)
 
     # Define transform for images
-    transform=transforms.Compose([transforms.Resize((params.input_size,params.input_size)),
+    transform=transforms.Compose([transforms.Resize((256,256)),
                                   transforms.ToTensor(),
                                   transforms.Normalize(mean=norm_mean,std=norm_std)
                                   ])
 
     # Define test dataset
-    test_data = Dataset(data_dir_test,params.image_dir,input_tf=transform)
+    test_data = Dataset(root,test,params.image_dir,input_tf=transform)
 
     if args.roi:
         pred_test_data = Dataset(data_dir_test,params_roi.image_dir,input_tf=transform)
@@ -138,7 +173,7 @@ def main():
     test_loader = DataLoader(test_data, batch_size=1, shuffle=False, pin_memory=False)
 
     # Define model
-    model = model_module.net(params.num_classes).to(device)
+    model = model_module.net(params.num_classes)
 
     # Grap test function for your network.
     final_test = model_module.final_test
@@ -146,7 +181,7 @@ def main():
     # Load relevant checkpoint for the fold
     chkpt = os.path.join(params.checkpoint_dir,"chkpt_{}".format(args.model_name+extra+"_lr0001"))
 
-    acc = final_test(model,device,test_loader,metrics,params,checkpoint=chkpt,name=args.model_name,extra=extra, 
+    acc = final_test(model,test_loader,metrics,params,checkpoint=chkpt,name=args.model_name,extra=extra, 
                prediction_dir=prediction_save)
     print("Test Accuracy: {}".format(acc))
 
