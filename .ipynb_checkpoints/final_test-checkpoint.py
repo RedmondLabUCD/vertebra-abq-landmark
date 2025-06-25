@@ -183,7 +183,7 @@ def main():
     final_test = model_module.final_test
 
     # Load relevant checkpoint for the fold
-    chkpt = os.path.join(params.checkpoint_dir,"chkpt_{}".format(args.model_name+extra+"_lr0001"))
+    chkpt = os.path.join(root,params.checkpoint_dir,"chkpt_{}".format(args.model_name+extra+"_lr0001"))
 
     acc = final_test(model,test_loader,metrics,params,checkpoint=chkpt,name=args.model_name,extra=extra, 
                prediction_dir=prediction_save)
