@@ -67,7 +67,7 @@ class HipSegDatasetTEST(Dataset):
     def __init__(self,root,filenames,image_dir,
                  input_tf=None,
                  loader=pil_loader):
-        self.root = data_dir
+        self.root = root
         self.input_tf = input_tf
         self.loader = loader
         self.input_dir = os.path.join(self.root,image_dir) #set image directory
