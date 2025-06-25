@@ -201,7 +201,7 @@ class curve_compare_metric_test(nn.Module):
 
         image = os.path.join(root,params.image_dir,filename+'.png')
         # Visualization
-        plt.imshow(image, cmap='hot', origin='upper')
+        plt.imshow(image)
         if pc_1.size > 0:
             plt.plot(pc_1[:, 0], pc_1[:, 1], 'b-', label='Predicted Curve')
         if pc_2.size > 0:
