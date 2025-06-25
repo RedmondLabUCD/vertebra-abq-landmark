@@ -41,6 +41,7 @@ def main():
     parser.add_argument("--clahe",required=False,default=False,help="Set to true to use CLAHE images.")
     parser.add_argument("--attn",required=False,default=False,help="Set to true to use Attn UNet images as base.")
     parser.add_argument("--cl",required=False,default=False,help="Set to true to use the UNet with Custom Loss as base.")
+    parser.add_argument("--ckpt",required=False,default=False,help="Set to true to use the UNet with Custom Loss as base.")
     args = parser.parse_args()
 
     # Parse our YAML file which has our model parameters. 
@@ -56,7 +57,10 @@ def main():
     # Define evaluation metric
     eval_metric = getattr(e_metric, "test_" + params.eval_metric)
     metrics = eval_metric()
-    
+
+    if args.ckpt:
+        params.checkpoint_dir = str(args.ckpt)
+        
      # Get root for dataset
     root = '//data/scratch/r094879/data'
 
