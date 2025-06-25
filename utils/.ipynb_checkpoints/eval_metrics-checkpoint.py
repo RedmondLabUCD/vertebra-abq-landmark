@@ -212,7 +212,7 @@ class curve_compare_metric_test(nn.Module):
         plt.legend()
         plt.title(f"Hausdorff Distance: {hd:.2f}")
         plt.gca().invert_yaxis()
-        plt.savefig(os.path.join('//data/scratch/r094879/data/Results',model_name,'output_heatmap_curve',+str(filename)+'.png'))
+        plt.savefig(os.path.join('//data/scratch/r094879/data/Results',model_name,'output_heatmap_curve',str(filename)+'.png'))
 
         return hd
 
