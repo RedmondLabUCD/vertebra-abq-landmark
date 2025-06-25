@@ -213,7 +213,7 @@ def final_test(model, loader, eval_metric, params, checkpoint=None, name=None, e
     with torch.no_grad():
         for batch_idx, (inputs, full_filenames) in enumerate(loader):
             predictions = model(inputs)
-            filenames = full_filenames[0][:-4]
+            filenames = full_filenames[0]
             filename = filenames.split("\\")[-1]
             metric_avg = eval_metric(predictions,filename,params,name)
             metrics.append(metric_avg)
