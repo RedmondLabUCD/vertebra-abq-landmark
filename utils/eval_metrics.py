@@ -170,7 +170,7 @@ class curve_compare_metric_test(nn.Module):
         pc_2 = extract_curve_from_heatmap(prediction[0,1,:,:])
 
         root = '//data/scratch/r094879/data/'
-        ground_truth = np.load(os.path.join(self.root,params.target_dir,filename+'.npy')) 
+        ground_truth = np.load(os.path.join(root,params.target_dir,filename+'.npy')) 
         gt_1 = extract_curve_from_heatmap(ground_truth[0,0,:,:])
         gt_2 = extract_curve_from_heatmap(ground_truth[0,1,:,:])
 
@@ -198,7 +198,7 @@ class curve_compare_metric_test(nn.Module):
         if not os.path.exists(os.path.join('//data/scratch/r094879/data/Results',model_name,'output_heatmap_curve')):
             os.makedirs(os.path.join('//data/scratch/r094879/data/Results',model_name,'output_heatmap_curve'))
 
-        image = os.path.join(self.root,params.image_dir,filename+'.png')
+        image = os.path.join(root,params.image_dir,filename+'.png')
         # Visualization
         plt.imshow(image, cmap='hot', origin='upper')
         if pc_1.size > 0:
