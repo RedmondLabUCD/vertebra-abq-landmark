@@ -171,9 +171,9 @@ class curve_compare_metric_test(nn.Module):
 
         root = '//data/scratch/r094879/data/'
         ground_truth = np.load(os.path.join(root,params.target_dir,filename+'.npy')) 
-        print(ground_truth.shape)
-        gt_1 = extract_curve_from_heatmap(ground_truth[0,:,:])
-        gt_2 = extract_curve_from_heatmap(ground_truth[1,:,:])
+        
+        gt_1 = extract_curve_from_heatmap(ground_truth[:,:,0])
+        gt_2 = extract_curve_from_heatmap(ground_truth[:,:,1])
 
         if pc_1.shape[0] == 0:
             hd1 = 256.0
