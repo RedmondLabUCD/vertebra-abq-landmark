@@ -619,9 +619,12 @@ class custom_weighted_loss2(nn.Module):
     
     def forward(self,prediction,target):
         weight_map = target.detach().clone()
-        weight_map = (weight_map*10).int()
+        # weight_map = (weight_map*10).int()
+        weight_map = (weight_map>0.5).float()
+        weight_map = weight_map*9 + 1
         diff = (prediction - target)**2
-        weighted = diff*(weight_map+1)
+        # weighted = diff*(weight_map+1)
+        weighted = diff*weight_map
         loss = torch.mean(weighted)
         return loss
 
