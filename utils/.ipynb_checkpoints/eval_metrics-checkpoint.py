@@ -610,14 +610,9 @@ class custom_loss_sobel(nn.Module):
 
         loss_bce = loss(prediction, target)
 
-        loss_grad_all = []
-        for i in range(prediction.shape[0]):
-            loss_grad_1 = sobel_gradient_loss(prediction[i,0,:,:], target)
-            loss_grad_2 = sobel_gradient_loss(prediction[i,1,:,:], target)
-            loss_grad_current = (loss_grad_1 + loss_grad_2)/2
-            loss_grad.append(loss_grad_current)
-
-        loss_grad = sum(loss_grad)/len(loss_grad)
+        loss_grad_1 = sobel_gradient_loss(prediction[:,0,:,:].unsqueeze(1), target[:,0,:,:].unsqueeze(1))
+        loss_grad_2 = sobel_gradient_loss(prediction[:,1,:,:].unsqueeze(1), target[:,1,:,:].unsqueeze(1))
+        loss_grad = (loss_grad_1 + loss_grad_2)/2
         total_loss = loss_bce + 0.5 * loss_grad
 
         return total_loss
