@@ -600,6 +600,46 @@ class test_pb_roi_mse_metric(nn.Module):
         return mse
 
 
+class custom_loss_sobel(nn.Module):
+    def __init__(self):
+        super(custom_loss_sobel, self).__init__()
+    
+    def forward(self,prediction,target):
+        loss = nn.BCELoss()
+
+        loss_bce = loss(prediction, target)
+        
+        loss_grad = sobel_gradient_loss(prediction, target)
+        total_loss = loss_bce + 0.5 * loss_grad
+
+        return total_loss
+
+
+def sobel_filters():
+    kernel_x = torch.tensor([[[-1, 0, 1],
+                              [-2, 0, 2],
+                              [-1, 0, 1]]], dtype=torch.float32)
+    kernel_y = torch.tensor([[[-1, -2, -1],
+                              [ 0,  0,  0],
+                              [ 1,  2,  1]]], dtype=torch.float32)
+    return kernel_x.unsqueeze(0), kernel_y.unsqueeze(0)
+
+def sobel_gradient_loss(pred, target):
+    kernel_x, kernel_y = sobel_filters()
+    kernel_x = kernel_x.to(pred)
+    kernel_y = kernel_y.to(pred)
+
+    grad_pred_x = F.conv2d(pred, kernel_x, padding=1)
+    grad_pred_y = F.conv2d(pred, kernel_y, padding=1)
+    grad_target_x = F.conv2d(target, kernel_x, padding=1)
+    grad_target_y = F.conv2d(target, kernel_y, padding=1)
+
+    loss_x = F.l1_loss(grad_pred_x, grad_target_x)
+    loss_y = F.l1_loss(grad_pred_y, grad_target_y)
+    
+    return loss_x + loss_y
+    
+
 class custom_weighted_loss(nn.Module):
     def __init__(self):
         super(custom_weighted_loss, self).__init__()
