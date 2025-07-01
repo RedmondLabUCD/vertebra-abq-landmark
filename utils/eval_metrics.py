@@ -610,7 +610,7 @@ class custom_loss_sobel(nn.Module):
 
         print(target.max())
         print(target.min())
-        print(np.isnan(target))
+        print(torch.isnan(target))
 
         loss_bce_1 = loss(prediction[:,0,:,:].unsqueeze(1), target[:,0,:,:].unsqueeze(1))
         loss_bce_2 = loss(prediction[:,1,:,:].unsqueeze(1), target[:,1,:,:].unsqueeze(1))
