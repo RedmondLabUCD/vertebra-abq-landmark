@@ -608,6 +608,10 @@ class custom_loss_sobel(nn.Module):
     def forward(self,prediction,target):
         loss = nn.BCELoss()
 
+        print(target.max())
+        print(target.min())
+        print(np.isnan(target))
+
         loss_bce_1 = loss(prediction[:,0,:,:].unsqueeze(1), target[:,0,:,:].unsqueeze(1))
         loss_bce_2 = loss(prediction[:,1,:,:].unsqueeze(1), target[:,1,:,:].unsqueeze(1))
         loss_bce = (loss_bce_1+loss_bce_2)/2
