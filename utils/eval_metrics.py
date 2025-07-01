@@ -6,6 +6,7 @@ import os
 import itertools
 import torch
 import torch.nn as nn
+import torch.nn.functional as F
 from sklearn.metrics import root_mean_squared_error, mean_squared_error
 from PIL import Image
 from utils.landmark_prep import prep_landmarks
@@ -629,13 +630,13 @@ def sobel_gradient_loss(pred, target):
     kernel_x = kernel_x.to(pred)
     kernel_y = kernel_y.to(pred)
 
-    grad_pred_x = nn.conv2d(pred, kernel_x, padding=1)
-    grad_pred_y = nn.conv2d(pred, kernel_y, padding=1)
-    grad_target_x = nn.conv2d(target, kernel_x, padding=1)
-    grad_target_y = nn.conv2d(target, kernel_y, padding=1)
+    grad_pred_x = F.conv2d(pred, kernel_x, padding=1)
+    grad_pred_y = F.conv2d(pred, kernel_y, padding=1)
+    grad_target_x = F.conv2d(target, kernel_x, padding=1)
+    grad_target_y = F.conv2d(target, kernel_y, padding=1)
 
-    loss_x = nn.l1_loss(grad_pred_x, grad_target_x)
-    loss_y = nn.l1_loss(grad_pred_y, grad_target_y)
+    loss_x = F.l1_loss(grad_pred_x, grad_target_x)
+    loss_y = F.l1_loss(grad_pred_y, grad_target_y)
     
     return loss_x + loss_y
     
