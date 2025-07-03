@@ -113,6 +113,7 @@ def train(model, loader, optimizer, criterion, params=None):
         # targets = targets.to(device)
         optimizer.zero_grad() # clear previous gradient computation
         predictions = model(batch) # forward propagation  
+        print(filenames)
         loss = criterion(targets, predictions) # calculate the loss
         loss.backward() # backpropagate to compute gradients
         optimizer.step() # update model weights
