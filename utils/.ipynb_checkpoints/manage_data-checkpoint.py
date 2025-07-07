@@ -715,7 +715,7 @@ def create_dataset():
 
 def check_abq_heatmaps():
 
-    root = '//data/scratch/r094879/data"
+    root = '//data/scratch/r094879/data'
     target_dir = "roi_heatmaps"
 
     all_files = list_files(os.path.join(root,target_dir),".npy")
