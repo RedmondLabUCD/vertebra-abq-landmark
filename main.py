@@ -1,4 +1,4 @@
-from utils.manage_data import prep_data, plot_images_with_points, create_dataset, view_heatmaps, plot_images_with_points_256, gather_boundaries, create_mask, plot_test_images_with_points, split_data_for_check, rotate_180_check, avg_vertebra_dist
+from utils.manage_data import prep_data, plot_images_with_points, create_dataset, view_heatmaps, plot_images_with_points_256, gather_boundaries, create_mask, plot_test_images_with_points, split_data_for_check, rotate_180_check, avg_vertebra_dist, check_abq_heatmaps
 
 
 if __name__ == '__main__':
