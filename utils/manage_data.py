@@ -723,6 +723,7 @@ def check_abq_heatmaps():
 
     for filename in all_files:
         output = np.load(os.path.join(root,target_dir,filename))
+        print(output)
         if np.isnan(output).any():
             print(filename)
         else:
