@@ -23,6 +23,7 @@ from pydicom.pixel_data_handlers.util import apply_voi_lut
 import matplotlib.pyplot as plt
 from matplotlib.lines import Line2D
 import statistics
+from torchvision.datasets.utils import list_files
     
 
 def prep_data():
