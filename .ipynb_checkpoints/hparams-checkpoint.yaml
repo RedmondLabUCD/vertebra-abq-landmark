@@ -51,6 +51,6 @@ UNet_ABQ_sobel:
   eval_metric: "curve_compare_metric"
   test_eval_metric: "pb_mse_metric_test"
   num_classes: 2
-  batch_size: 32
+  batch_size: 1
   input_size: 256
   early_stopping_up: False
