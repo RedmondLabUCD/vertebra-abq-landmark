@@ -722,9 +722,9 @@ def check_abq_heatmaps():
     all_files = list_files(os.path.join(root,target_dir),".npy")
 
     for filename in all_files:
-        output = np.load(filename)
+        output = np.load(os.path.join(root,target_dir,filename))
         if torch.isnan(target):
-            print(filename.split('//')[-1])
+            print(filename)
         else:
             print("not")
     
