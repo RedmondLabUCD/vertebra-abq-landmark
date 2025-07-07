@@ -605,12 +605,8 @@ class custom_loss_sobel(nn.Module):
     def __init__(self):
         super(custom_loss_sobel, self).__init__()
     
-    def forward(self,prediction,target):
+    def forward(self,target,prediction):
         loss = nn.BCELoss()
-
-        print(target.max())
-        print(target.min())
-        print(torch.isnan(target))
 
         loss_bce_1 = loss(prediction[:,0,:,:].unsqueeze(1), target[:,0,:,:].unsqueeze(1))
         loss_bce_2 = loss(prediction[:,1,:,:].unsqueeze(1), target[:,1,:,:].unsqueeze(1))
@@ -654,7 +650,7 @@ class custom_weighted_loss(nn.Module):
     def __init__(self):
         super(custom_weighted_loss, self).__init__()
     
-    def forward(self,prediction,target):
+    def forward(self,target,prediction):
         weight_map = target.detach().clone()
         weight_map = (weight_map>0.5).float()
         diff = (prediction - target)**2
@@ -667,7 +663,7 @@ class custom_weighted_loss2(nn.Module):
     def __init__(self):
         super(custom_weighted_loss2, self).__init__()
     
-    def forward(self,prediction,target):
+    def forward(self,target,prediction):
         weight_map = target.detach().clone()
         # weight_map = (weight_map*10).int()
         weight_map = (weight_map>0.5).float()
@@ -686,7 +682,7 @@ class custom_weighted_loss_2(nn.Module):
     def __init__(self):
         super(custom_weighted_loss_2, self).__init__()
     
-    def forward(self,prediction,target):
+    def forward(self,target,prediction):
         weight_map = target.detach().clone()
         weight_map = (weight_map>0.5).float()
         weight_map = weight_map*9 + 1
@@ -724,7 +720,7 @@ class custom_weighted_loss_3(nn.Module):
     def __init__(self):
         super(custom_weighted_loss_3, self).__init__()
     
-    def forward(self,prediction,target):
+    def forward(self,target,prediction):
         weight_map = target.detach().clone()
         weight_map = (weight_map>0.5).float()
 

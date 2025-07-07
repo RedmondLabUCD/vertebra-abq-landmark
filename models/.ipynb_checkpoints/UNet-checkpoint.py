@@ -136,7 +136,7 @@ def val(model, loader, criterion, eval_metric, params, checkpoint=None):
             # batch = batch.to(device)
             # targets = targets.to(device)
             predictions = model(batch) # forward propagation
-            loss = criterion(predictions, targets) # calculate the loss
+            loss = criterion(targets, predictions) # calculate the loss
             valid_loss.update(loss) # update running loss value
             
             # Get filename
