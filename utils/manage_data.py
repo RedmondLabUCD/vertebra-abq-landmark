@@ -713,6 +713,21 @@ def create_dataset():
         gather_boundaries(row,output_dir_3,output_dir_5,avg_y)  
 
 
+def check_abq_heatmaps():
+
+    root = '//data/scratch/r094879/data"
+    target_dir = "roi_heatmaps"
+
+    all_files = list_files(os.path.join(root,target_dir),".npy")
+
+    for filename in all_files:
+        output = np.load(filename)
+        if torch.isnan(target):
+            print(filename.split('//')[-1]
+        else:
+            print("not")
+    
+
 def view_heatmaps():
     
     file_path = '//data/scratch/r094879/data/heatmaps/1.2.392.200036.9125.9.0.68100090.749932288.3927965275.npy'

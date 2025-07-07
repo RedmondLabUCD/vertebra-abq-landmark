@@ -3,7 +3,7 @@ from utils.manage_data import prep_data, plot_images_with_points, create_dataset
 
 if __name__ == '__main__':
 
-    create_dataset()
+    # create_dataset()
     # plot_images_with_points()
     # prep_data()
     # split_data_for_check()
@@ -14,3 +14,4 @@ if __name__ == '__main__':
     # plot_test_images_with_points('UNet_LM.csv',name='Base')
     # avg_vertebra_dist()
     # check_px_spacing()
+    check_abq_heatmaps()
