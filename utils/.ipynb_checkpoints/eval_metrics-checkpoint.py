@@ -657,6 +657,17 @@ class custom_weighted_loss(nn.Module):
         weighted = diff*(weight_map*9+1)
         loss = torch.mean(weighted)
         return loss
+
+
+class rmse_eval(nn.Module):
+    def __init__(self):
+        super(rmse_eval, self).__init__()
+    
+    def forward(self,target,prediction,filename,params):
+        diff = (prediction - target)**2
+        avg_diff = torch.mean(diff)
+        loss = torch.sqrt(avg_diff)
+        return loss
     
     
 class custom_weighted_loss2(nn.Module):

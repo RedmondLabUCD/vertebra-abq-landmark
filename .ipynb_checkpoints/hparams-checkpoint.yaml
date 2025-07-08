@@ -2,6 +2,7 @@ default: &DEFAULT
   num_epochs: 20
   batch_size: 64
 
+
 UNet_ABQ_LM:
   <<: *DEFAULT
   model_name: UNet
@@ -13,6 +14,24 @@ UNet_ABQ_LM:
   dataset_class: "SpineDataset"
   loss: "custom_weighted_loss"
   eval_metric: "curve_compare_metric"
+  test_eval_metric: "curve_compare_metric_test"
+  num_classes: 2
+  batch_size: 32
+  input_size: 256
+  early_stopping_up: False
+
+
+UNet_ABQ_LM_2:
+  <<: *DEFAULT
+  model_name: UNet
+  image_dir: "roi_imgs"
+  target_dir: "roi_heatmaps"
+  target_sfx: ".npy"
+  checkpoint_dir: "Checkpoint/Loss_check"
+  log_dir: 'Logs/Loss_check'
+  dataset_class: "SpineDataset"
+  loss: "custom_weighted_loss"
+  eval_metric: "rmse_eval"
   test_eval_metric: "curve_compare_metric_test"
   num_classes: 2
   batch_size: 32
