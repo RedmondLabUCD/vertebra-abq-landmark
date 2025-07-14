@@ -28,7 +28,7 @@ source /trinity/home/r094879/vertebra-detection/bin/activate
 # python test.py UNet_LM_CL3 --ckpt "Checkpoint/Test1"
 # python test.py UNet_LM --ckpt "Checkpoint/Test2"
 
-# python main.py
+python main.py
 # python final_training.py UNet_ABQ_sobel --custom_loss True --ckpt "Checkpoint/abq_lm/"
 # python final_test.py UNet_ABQ_LM --cl True --ckpt "Checkpoint/abq_lm/"
 python final_training.py UNet_ABQ_LM_2 --custom_loss True --ckpt "Checkpoint/abq_lm_rmse/"
