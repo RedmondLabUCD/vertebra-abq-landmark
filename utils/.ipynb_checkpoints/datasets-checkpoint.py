@@ -63,7 +63,7 @@ class SpineDataset(Dataset):
         return len(self.file_list) # returns the length of the data file list
     
     
-class HipSegDatasetTEST(Dataset):
+class SpineDatasetTEST(Dataset):
     def __init__(self,root,filenames,image_dir,
                  input_tf=None,
                  loader=pil_loader):

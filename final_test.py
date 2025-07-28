@@ -113,7 +113,7 @@ def main():
             filename = filename[:-4]
             test.append(filename)
         
-    Dataset = getattr(datasets,"HipSegDatasetTEST")
+    Dataset = getattr(datasets,"SpineDatasetTEST")
     
     extra = ""
     extra2 = extra
@@ -189,10 +189,10 @@ def main():
                prediction_dir=prediction_save)
     print("Test Accuracy: {}".format(acc))
 
-    if args.roi:
-        pred_acc = final_test(model, device, pred_test_loader, metrics, params_roi, checkpoint=chkpt, 
-                        name=args.model_name, extra="_Pred"+extra2, prediction_dir=prediction_roi)
-        print("Test Accuracy: {}".format(pred_acc))
+    # if args.roi:
+    #     pred_acc = final_test(model, device, pred_test_loader, metrics, params_roi, checkpoint=chkpt, 
+    #                     name=args.model_name, extra="_Pred"+extra2, prediction_dir=prediction_roi)
+    #     print("Test Accuracy: {}".format(pred_acc))
 
 
 if __name__ == '__main__':
