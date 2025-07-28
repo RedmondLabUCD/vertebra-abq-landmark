@@ -194,8 +194,9 @@ class curve_compare_metric_test(nn.Module):
         if not os.path.exists(heatmap_dir):
             os.makedirs(heatmap_dir)
 
-        cv.imwrite(os.path.join(heatmap_dir,filename + '_top.png'), prediction[0,0,:,:])
-        cv.imwrite(os.path.join(heatmap_dir,filename + '_bottom.png'), prediction[0,1,:,:])
+        pred_temp = prediction[0,:,:,:]
+        cv.imwrite(os.path.join(heatmap_dir,filename + '_top.png'), pred_temp[0:1,:,:])
+        cv.imwrite(os.path.join(heatmap_dir,filename + '_bottom.png'), pred_temp[1:1,:,:])
     
         if not os.path.exists(os.path.join('//data/scratch/r094879/data/Results',model_name,'output_heatmap_curve')):
             os.makedirs(os.path.join('//data/scratch/r094879/data/Results',model_name,'output_heatmap_curve'))
