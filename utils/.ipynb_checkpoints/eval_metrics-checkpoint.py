@@ -140,21 +140,21 @@ class curve_compare_metric(nn.Module):
         # Compute Hausdorff distance
         hd = (hd1+hd2)/2
     
-        if not os.path.exists('//data/scratch/r094879/data/data_check/output_heatmap_curve/'):
-            os.makedirs('//data/scratch/r094879/data/data_check/output_heatmap_curve/')
+        # if not os.path.exists('//data/scratch/r094879/data/data_check/output_heatmap_curve/'):
+        #     os.makedirs('//data/scratch/r094879/data/data_check/output_heatmap_curve/')
             
-        # Visualization
-        plt.imshow(heatmap, cmap='hot', origin='upper')
-        if pc_1.size > 0:
-            plt.plot(pc_1[:, 0], pc_1[:, 1], 'b-', label='Predicted Curve')
-        if pc_2.size > 0:
-            plt.plot(pc_2[:, 0], pc_2[:, 1], 'b-', label='Predicted Curve')
-        plt.plot(gt_1[:, 0], gt_1[:, 1], 'g--', label='Ground Truth')
-        plt.plot(gt_2[:, 0], gt_2[:, 1], 'g--', label='Ground Truth')
-        plt.legend()
-        plt.title(f"Hausdorff Distance: {hd:.2f}")
-        plt.gca().invert_yaxis()
-        plt.savefig('//data/scratch/r094879/data/data_check/output_heatmap_curve/'+str(filename)+'.png')
+        # # Visualization
+        # plt.imshow(ground_truth, cmap='hot', origin='upper')
+        # if pc_1.size > 0:
+        #     plt.plot(pc_1[:, 0], pc_1[:, 1], 'b-', label='Predicted Curve')
+        # if pc_2.size > 0:
+        #     plt.plot(pc_2[:, 0], pc_2[:, 1], 'b-', label='Predicted Curve')
+        # plt.plot(gt_1[:, 0], gt_1[:, 1], 'g--', label='Ground Truth')
+        # plt.plot(gt_2[:, 0], gt_2[:, 1], 'g--', label='Ground Truth')
+        # plt.legend()
+        # plt.title(f"Hausdorff Distance: {hd:.2f}")
+        # plt.gca().invert_yaxis()
+        # plt.savefig('//data/scratch/r094879/data/data_check/output_heatmap_curve/'+str(filename)+'.png')
 
         return hd
 
