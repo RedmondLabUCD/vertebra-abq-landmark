@@ -90,10 +90,10 @@ def main():
     for index, row in csv_df.iterrows():
         image_name = row['image']
 
-        if index < int(0.4*len(csv_df)):
+        if index < int(0.6*len(csv_df)):
             train_over.append(image_name)
             train_id = row['id']
-        elif index < int(0.6*len(csv_df)):
+        elif index < int(0.8*len(csv_df)):
             if int(row['id']) == int(train_id):
                 train_over.append(image_name)
             else:
